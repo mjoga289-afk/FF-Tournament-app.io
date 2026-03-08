@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tunff09 - Free Fire Tournament</title>
+    
+    <!-- Telegram Ads SDK - লোড হবে পরে -->
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Database -->
+    <script src="database.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Hind Siliguri', 'Inter', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding-bottom: 80px;
+            color: #2d3436;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .navbar-bottom {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #ffffff;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border-radius: 25px 25px 0 0;
+            padding: 8px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-item-bottom {
+            text-align: center;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 11px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-item-bottom i {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .nav-item-bottom.active {
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .main-content { 
+            padding: 15px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f1f1f1;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            border: none; 
+            padding: 12px;
+            border-radius: 50px; 
+            font-weight: 600; 
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+
+        .admin-btn-float {
+            position: fixed; 
+            top: 20px; 
+            left: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px; 
+            border-radius: 50px;
+            font-weight: 600; 
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .admin-btn-float.hidden {
+            display: none;
+        }
+
+        .support-btn-float {
+            position: fixed; 
+            top: 20px; 
+            right: 20px;
+            background: #25D366; 
+            color: white;
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 26px; 
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            text-decoration: none;
+        }
+
+        .support-btn-float:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .website-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+
+        .tournament-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .tourney-card {
+            background: white; 
+            border-radius: 20px; 
+            overflow: hidden;
+            margin-bottom: 15px; 
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s;
+        }
+
+        .tourney-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .tourney-header { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 10px 15px; 
+            font-size: 13px; 
+            display: flex; 
+            justify-content: space-between; 
+            font-weight: 500;
+        }
+
+        .tourney-body { 
+            padding: 15px; 
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-upcoming { background: #e3f2fd; color: #1565c0; }
+        .status-ongoing { background: #c8e6c9; color: #2e7d32; }
+        .status-selection { background: #fff3e0; color: #ef6c00; }
+        .status-completed { background: #eeeeee; color: #616161; }
+
+        .room-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .admin-panel-full {
+            position: fixed; 
+            inset: 0; 
+            background: white; 
+            z-index: 5000;
+            display: none; 
+            overflow-y: auto; 
+            padding: 20px;
+        }
+
+        .admin-panel-full.show { 
+            display: block; 
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .participant-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .participant-item.selected {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .selection-history {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hidden { display: none !important; }
+
+        .code-input {
+            font-family: monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .youtube-task {
+            background: #ff000010;
+            border-left: 4px solid #ff0000;
+        }
+
+        .support-settings {
+            background: #f0f9ff;
+            border: 1px solid #b6e0fe;
+        }
+
+        @media (max-width: 576px) {
+            .website-header h1 { font-size: 2.2rem; }
+            .nav-item-bottom span { font-size: 10px; }
+            .nav-item-bottom i { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Telegram Ads SDK - লোড হবে পরে -->
+<script>
+    // Telegram Ads SDK সঠিকভাবে লোড করা
+    (function() {
+        const script = document.createElement('script');
+        script.src = '//libtl.com/sdk.js';
+        script.setAttribute('data-zone', '10698833');
+        script.setAttribute('data-sdk', 'show_10698833');
+        script.async = true;
+        
+        script.onload = function() {
+            console.log('Telegram Ads SDK loaded successfully');
+            
+            // 15 মিনিট পর পর ইন-অ্যাপ অ্যাড দেখাবে
+            if (typeof show_10698833 === 'function') {
+                // ইন-অ্যাপ ইন্টারস্টিশিয়াল অ্যাড (১৫ মিনিট পর পর)
+                show_10698833({
+                    type: 'inApp',
+                    inAppSettings: {
+                        frequency: 1,           // প্রতি ১৫ মিনিটে ১টি অ্যাড
+                        capping: 0.25,          // ১৫ মিনিট (০.২৫ ঘণ্টা)
+                        interval: 900,           // ৯০০ সেকেন্ড = ১৫ মিনিট
+                        timeout: 5,              // ৫ সেকেন্ড পর দেখাবে
+                        everyPage: true          // প্রতি পৃষ্ঠায় চেক করবে
+                    }
+                });
+            }
+        };
+        
+        script.onerror = function() {
+            console.log('Telegram Ads SDK failed to load');
+        };
+        
+        document.head.appendChild(script);
+    })();
+</script>
+
+<!-- Admin Floating Button -->
+<button id="adminBtn" class="admin-btn-float hidden" onclick="toggleAdminPanel(true)">
+    <i class="bi bi-shield-lock me-1"></i> এডমিন প্যানেল
+</button>
+
+<!-- Support Floating Button (WhatsApp) -->
+<a id="whatsappFloatBtn" href="https://wa.me/8801234567890" target="_blank" class="support-btn-float">
+    <i class="bi bi-whatsapp"></i>
+</a>
+
+<!-- Telegram Group Button -->
+<a id="telegramGroupBtn" href="https://t.me/tunff09" target="_blank" class="support-btn-float" style="top: 80px; background: #0088cc; right: 20px;">
+    <i class="bi bi-telegram"></i>
+</a>
+
+<!-- Success Message -->
+<div id="successMessage" class="success-message"></div>
+
+<!-- Error Message -->
+<div id="errorMessage" class="error-message"></div>
+
+<!-- Main Content Area -->
+<div class="main-content" id="mainContent"></div>
+
+<!-- Admin Panel Full Screen -->
+<div id="adminPanel" class="admin-panel-full">
+    <div class="admin-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0"><i class="bi bi-gear-fill me-2"></i>এডমিন প্যানেল</h4>
+            <button class="btn-close" onclick="toggleAdminPanel(false)"></button>
+        </div>
+
+        <ul class="nav nav-tabs mb-3" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#adm-users" type="button" role="tab">ইউজারস</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tasks-tab" data-bs-toggle="tab" data-bs-target="#adm-tasks" type="button" role="tab">টাস্ক</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="youtube-tab" data-bs-toggle="tab" data-bs-target="#adm-youtube" type="button" role="tab">ইউটিউব টাস্ক</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tournaments-tab" data-bs-toggle="tab" data-bs-target="#adm-tournaments" type="button" role="tab">টুর্নামেন্ট</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="manage-tab" data-bs-toggle="tab" data-bs-target="#adm-tournament-manage" type="button" role="tab">ম্যানেজ</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="support-tab" data-bs-toggle="tab" data-bs-target="#adm-support" type="button" role="tab">সাপোর্ট</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#adm-stats" type="button" role="tab">পরিসংখ্যান</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#adm-about" type="button" role="tab">এবাউট</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Users Management -->
+            <div class="tab-pane fade show active" id="adm-users" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">ইউজার ম্যানেজমেন্ট</h6>
+                    <div class="input-group mb-3">
+                        <input type="text" id="userSearch" class="form-control" placeholder="FF ID, ইমেইল বা ফোন নাম্বার">
+                        <button class="btn btn-primary" onclick="searchUser()">সার্চ</button>
+                    </div>
+                    <div id="searchResult" class="hidden bg-light p-3 rounded-3 mb-3"></div>
+                </div>
+                <div id="usersList" class="table-responsive" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Tasks Management -->
+            <div class="tab-pane fade" id="adm-tasks" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">নতুন টাস্ক</h6>
+                    <input type="text" id="taskTitle" class="form-control mb-2" placeholder="টাস্ক টাইটেল">
+                    <textarea id="taskDesc" class="form-control mb-2" placeholder="বিবরণ" rows="2"></textarea>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" id="taskReward" class="form-control mb-2" placeholder="রিওয়ার্ড (কয়েন)">
+                        </div>
+                        <div class="col-6">
+                            <select id="taskType" class="form-select mb-2">
+                                <option value="youtube">ইউটিউব</option>
+                                <option value="facebook">ফেসবুক</option>
+                                <option value="instagram">ইনস্টাগ্রাম</option>
+                                <option value="telegram">টেলিগ্রাম</option>
+                                <option value="whatsapp">হোয়াটসঅ্যাপ</option>
+                                <option value="daily">ডেইলি</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="url" id="taskLink" class="form-control mb-2" placeholder="টাস্ক লিংক (ঐচ্ছিক)">
+                    <button class="btn btn-primary w-100" onclick="addTask()">টাস্ক যোগ করুন</button>
+                </div>
+                <div id="tasksList" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- YouTube Code Tasks Management -->
+            <div class="tab-pane fade" id="adm-youtube" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">ইউটিউব কোড টাস্ক</h6>
+                    <p class="small text-muted">ইউটিউব ভিডিওতে লুকানো কোড এনে ইউজাররা কয়েন পাবে</p>
+                    
+                    <input type="text" id="youtubeTaskTitle" class="form-control mb-2" placeholder="টাস্ক টাইটেল">
+                    <input type="url" id="youtubeTaskLink" class="form-control mb-2" placeholder="ইউটিউব ভিডিও লিংক">
+                    <input type="text" id="youtubeTaskCode" class="form-control mb-2 code-input" placeholder="ভিডিওর ভিতরের কোড (যেমন: FF2024)">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" id="youtubeTaskReward" class="form-control mb-2" placeholder="রিওয়ার্ড (কয়েন)">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" id="youtubeTaskValidHours" class="form-control mb-2" placeholder="ভ্যালিডিটি (ঘণ্টা)" value="24">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="addYouTubeCodeTask()">ইউটিউব কোড টাস্ক যোগ করুন</button>
+                </div>
+                <div id="youtubeTasksList" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Tournaments Management - Create -->
+            <div class="tab-pane fade" id="adm-tournaments" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">নতুন টুর্নামেন্ট</h6>
+                    <input type="text" id="tournamentName" class="form-control mb-2" placeholder="টুর্নামেন্ট নাম">
+                    <div class="row">
+                        <div class="col-6">
+                            <select id="tournamentType" class="form-select mb-2">
+                                <option value="solo">সোলো</option>
+                                <option value="duo">ডুয়ো</option>
+                                <option value="squad">স্কোয়াড</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <select id="tournamentMap" class="form-select mb-2">
+                                <option value="bermuda">বারমুডা</option>
+                                <option value="purgatory">পর্গেটরি</option>
+                                <option value="kalahari">কালাহারি</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" id="entryFee" class="form-control mb-2" placeholder="এন্ট্রি ফি">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" id="maxPlayers" class="form-control mb-2" placeholder="সর্বোচ্চ খেলোয়াড়">
+                        </div>
+                    </div>
+                    <input type="text" id="prizePool" class="form-control mb-2" placeholder="প্রাইজ মানি">
+                    <input type="datetime-local" id="startTime" class="form-control mb-2">
+                    <button class="btn btn-primary w-100" onclick="addTournament()">টুর্নামেন্ট যোগ করুন</button>
+                </div>
+                <div id="tournamentsList" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Tournament Management - Select & Room -->
+            <div class="tab-pane fade" id="adm-tournament-manage" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">টুর্নামেন্ট সিলেক্ট করুন</h6>
+                    <select id="manageTournamentSelect" class="form-select mb-3" onchange="loadTournamentForManagement()">
+                        <option value="">টুর্নামেন্ট নির্বাচন করুন</option>
+                    </select>
+                </div>
+
+                <div id="tournamentManageContent" class="hidden">
+                    <!-- Tournament Info -->
+                    <div class="glass-card mb-3">
+                        <h6 class="fw-bold mb-2" id="manageTournamentName"></h6>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <span class="small text-muted">জয়েন করেছে</span>
+                                <h5 id="joinedCount">0</h5>
+                            </div>
+                            <div class="col-4">
+                                <span class="small text-muted">সিলেক্ট করেছে</span>
+                                <h5 id="selectedCount">0</h5>
+                            </div>
+                            <div class="col-4">
+                                <span class="small text-muted">মোট</span>
+                                <h5 id="maxCount">0</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selection Controls -->
+                    <div class="glass-card mb-3">
+                        <h6 class="fw-bold mb-3">প্লেয়ার সিলেক্ট করুন</h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="number" id="selectCount" class="form-control" placeholder="কতজন সিলেক্ট করবেন?" min="1">
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-primary w-100" onclick="selectRandomPlayers()">র‍্যান্ডম সিলেক্ট</button>
+                            </div>
+                        </div>
+                        <div id="selectionHistory" class="selection-history mt-3"></div>
+                    </div>
+
+                    <!-- Room Details -->
+                    <div class="glass-card mb-3">
+                        <h6 class="fw-bold mb-3">রুম আইডি ও পাসওয়ার্ড দিন</h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" id="roomId" class="form-control mb-2" placeholder="রুম আইডি">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="roomPassword" class="form-control mb-2" placeholder="পাসওয়ার্ড">
+                            </div>
+                        </div>
+                        <button class="btn btn-success w-100" onclick="setRoomDetails()">রুম ডিটেইলস সেট করুন</button>
+                        <div id="currentRoomDetails" class="room-details hidden mt-2"></div>
+                    </div>
+
+                    <!-- Search Participants -->
+                    <div class="glass-card mb-3">
+                        <h6 class="fw-bold mb-3">প্লেয়ার সার্চ করুন</h6>
+                        <div class="input-group mb-3">
+                            <input type="text" id="participantSearch" class="form-control" placeholder="FF ID, ইমেইল বা ফোন">
+                            <button class="btn btn-primary" onclick="searchParticipant()">সার্চ</button>
+                        </div>
+                        <div id="participantSearchResult"></div>
+                    </div>
+
+                    <!-- Participants List -->
+                    <div class="glass-card">
+                        <h6 class="fw-bold mb-3">জয়েনকৃত প্লেয়ার লিস্ট</h6>
+                        <div id="participantsList" style="max-height: 400px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Settings -->
+            <div class="tab-pane fade" id="adm-support" role="tabpanel">
+                <div class="glass-card mb-3 support-settings">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-whatsapp me-2"></i>হোয়াটসঅ্যাপ সেটিংস</h6>
+                    <div class="mb-3">
+                        <label class="form-label small">হোয়াটসঅ্যাপ নাম্বার (আন্তর্জাতিক ফরম্যাট)</label>
+                        <input type="text" id="whatsappNumber" class="form-control" placeholder="যেমন: 8801234567890">
+                        <div class="form-text">শুধু নাম্বার দিন, + বা - ছাড়া</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">হোয়াটসঅ্যাপ মেসেজ (ঐচ্ছিক)</label>
+                        <input type="text" id="whatsappMessage" class="form-control" placeholder="যেমন: Hi, I need help">
+                    </div>
+                    <button class="btn btn-success w-100" onclick="updateWhatsApp()">হোয়াটসঅ্যাপ আপডেট করুন</button>
+                </div>
+
+                <div class="glass-card mb-3 support-settings">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-telegram me-2"></i>টেলিগ্রাম সেটিংস</h6>
+                    <div class="mb-3">
+                        <label class="form-label small">টেলিগ্রাম গ্রুপ লিংক</label>
+                        <input type="url" id="telegramLink" class="form-control" placeholder="যেমন: https://t.me/tunff09">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="updateTelegram()">টেলিগ্রাম আপডেট করুন</button>
+                </div>
+
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-envelope me-2"></i>ইমেইল সাপোর্ট</h6>
+                    <div class="mb-3">
+                        <label class="form-label small">সাপোর্ট ইমেইল</label>
+                        <input type="email" id="supportEmail" class="form-control" placeholder="যেমন: support@tunff09.com">
+                    </div>
+                    <button class="btn btn-info w-100" onclick="updateSupportEmail()">ইমেইল আপডেট করুন</button>
+                </div>
+
+                <div class="glass-card">
+                    <h6 class="fw-bold mb-3">কারেন্ট সাপোর্ট তথ্য</h6>
+                    <div id="currentSupportInfo" class="bg-light p-3 rounded-3">
+                        <p><strong>হোয়াটসঅ্যাপ:</strong> <span id="currentWhatsapp">লোড হচ্ছে...</span></p>
+                        <p><strong>টেলিগ্রাম গ্রুপ:</strong> <span id="currentTelegram">লোড হচ্ছে...</span></p>
+                        <p><strong>সাপোর্ট ইমেইল:</strong> <span id="currentEmail">লোড হচ্ছে...</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="tab-pane fade" id="adm-stats" role="tabpanel">
+                <div class="glass-card mb-3">
+                    <h6 class="fw-bold mb-3">পরিসংখ্যান</h6>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">মোট ইউজার</span>
+                                <h3 id="totalUsers">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">ভেরিফাইড ইউজার</span>
+                                <h3 id="verifiedUsers">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">মোট টাস্ক কমপ্লিট</span>
+                                <h3 id="totalTasksCompleted">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">মোট টুর্নামেন্ট</span>
+                                <h3 id="totalTournaments">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">মোট কয়েন দেওয়া</span>
+                                <h3 id="totalCoinsGiven">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-card mb-3">
+                                <span class="small text-muted">ইউটিউব টাস্ক</span>
+                                <h3 id="youtubeTasksCount">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h6 class="fw-bold mb-3">ইউজার লিডারবোর্ড (সর্বোচ্চ টাস্ক)</h6>
+                    <div id="userLeaderboard" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- About Management -->
+            <div class="tab-pane fade" id="adm-about" role="tabpanel">
+                <div class="glass-card">
+                    <h6 class="fw-bold mb-3">এবাউট পেজ এডিট</h6>
+                    <textarea id="aboutContent" class="form-control mb-2" rows="10" placeholder="এবাউট কন্টেন্ট লিখুন..."></textarea>
+                    <button class="btn btn-primary w-100" onclick="updateAbout()">সেভ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Navigation Bar -->
+<nav class="navbar-bottom">
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div class="col"><div class="nav-item-bottom active" onclick="showPage('home', this)"><i class="bi bi-house-door"></i><span>হোম</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('task', this)"><i class="bi bi-list-task"></i><span>টাস্ক</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('tournament', this)"><i class="bi bi-trophy"></i><span>টুর্নামেন্ট</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('history', this)"><i class="bi bi-clock-history"></i><span>হিস্ট্রি</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('about', this)"><i class="bi bi-info-circle"></i><span>এবাউট</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('account', this)"><i class="bi bi-person"></i><span>অ্যাকাউন্ট</span></div></div>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ==================== গ্লোবাল ভেরিয়েবল ====================
+let currentUser = null;
+let isAdmin = false;
+const ADMIN_EMAIL = 'mjoga289@gmail.com';
+
+// ==================== এরর হ্যান্ডলিং ====================
+function showError(message) {
+    const msgEl = document.getElementById('errorMessage');
+    msgEl.textContent = message;
+    msgEl.classList.add('show');
+    setTimeout(() => {
+        msgEl.classList.remove('show');
+    }, 4000);
+}
+
+function showSuccess(message) {
+    const msgEl = document.getElementById('successMessage');
+    msgEl.textContent = message;
+    msgEl.classList.add('show');
+    setTimeout(() => {
+        msgEl.classList.remove('show');
+    }, 3000);
+}
+
+// ==================== ডাটাবেস ইনিশিয়ালাইজ ====================
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        console.log('DOM loaded');
+        
+        // ডাটাবেজ ইনিশিয়ালাইজ
+        await db.init();
+        
+        // পেজ কন্টেইনার তৈরি
+        const mainContent = document.getElementById('mainContent');
+        const pages = ['home', 'task', 'tournament', 'history', 'about', 'account'];
+        
+        let pagesHTML = '';
+        pages.forEach(page => {
+            pagesHTML += `<div id="${page}" class="page"></div>`;
+        });
+        mainContent.innerHTML = pagesHTML;
+        
+        // সেভ করা ইউজার চেক
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            try {
+                currentUser = JSON.parse(savedUser);
+                // ভেরিফাই ইউজার এখনও আছে কিনা
+                const userExists = await db.getUser(currentUser.uid);
+                if (!userExists) {
+                    currentUser = null;
+                    localStorage.removeItem('currentUser');
+                }
+            } catch (e) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+            }
+        }
+        
+        // সাপোর্ট সেটিংস লোড
+        await loadSupportSettings();
+        
+        // সব পেজ লোড
+        await loadAllPages();
+        
+        // এডমিন স্ট্যাটাস চেক
+        checkAdminStatus();
+        
+    } catch (error) {
+        console.error('Initialization error:', error);
+        showError('ওয়েবসাইট লোড করতে সমস্যা হয়েছে। পৃষ্ঠা রিফ্রেশ করুন।');
+    }
+});
+
+async function loadAllPages() {
+    document.getElementById('home').innerHTML = renderHome();
+    document.getElementById('home').classList.add('active');
+    document.getElementById('task').innerHTML = renderTask();
+    document.getElementById('tournament').innerHTML = renderTournament();
+    document.getElementById('history').innerHTML = renderHistory();
+    document.getElementById('about').innerHTML = renderAbout();
+    document.getElementById('account').innerHTML = renderAccount();
+    
+    // ডাটা লোড
+    await loadNotice();
+    await loadAbout();
+    await loadTasks();
+    await loadYouTubeCodeTasks();
+    await loadTournaments();
+    
+    if (currentUser) {
+        await loadUserHistory();
+    }
+}
+
+// ==================== সাপোর্ট সেটিংস ====================
+async function loadSupportSettings() {
+    try {
+        const whatsapp = await db.getConfig('whatsapp_number') || '8801234567890';
+        const whatsappMsg = await db.getConfig('whatsapp_message') || '';
+        const telegram = await db.getConfig('telegram_link') || 'https://t.me/tunff09';
+        const email = await db.getConfig('support_email') || 'support@tunff09.com';
+        
+        // WhatsApp বাটন আপডেট
+        const whatsappBtn = document.getElementById('whatsappFloatBtn');
+        let whatsappUrl = `https://wa.me/${whatsapp}`;
+        if (whatsappMsg) {
+            whatsappUrl += `?text=${encodeURIComponent(whatsappMsg)}`;
+        }
+        whatsappBtn.href = whatsappUrl;
+        
+        // Telegram বাটন আপডেট
+        const telegramBtn = document.getElementById('telegramGroupBtn');
+        telegramBtn.href = telegram;
+        
+        // ফর্ম ফিল্ড আপডেট
+        const whatsappInput = document.getElementById('whatsappNumber');
+        const whatsappMsgInput = document.getElementById('whatsappMessage');
+        const telegramInput = document.getElementById('telegramLink');
+        const emailInput = document.getElementById('supportEmail');
+        
+        if (whatsappInput) whatsappInput.value = whatsapp;
+        if (whatsappMsgInput) whatsappMsgInput.value = whatsappMsg;
+        if (telegramInput) telegramInput.value = telegram;
+        if (emailInput) emailInput.value = email;
+        
+        // ডিসপ্লে আপডেট
+        document.getElementById('currentWhatsapp').textContent = whatsapp;
+        document.getElementById('currentTelegram').textContent = telegram;
+        document.getElementById('currentEmail').textContent = email;
+        
+    } catch (error) {
+        console.error('Error loading support settings:', error);
+    }
+}
+
+window.updateWhatsApp = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const number = document.getElementById('whatsappNumber').value.trim();
+        const message = document.getElementById('whatsappMessage').value.trim();
+        
+        if (!number) {
+            showError('হোয়াটসঅ্যাপ নাম্বার দিন');
+            return;
+        }
+        
+        await db.setConfig('whatsapp_number', number);
+        await db.setConfig('whatsapp_message', message);
+        
+        await loadSupportSettings();
+        showSuccess('✅ হোয়াটসঅ্যাপ আপডেট হয়েছে');
+    } catch (error) {
+        showError('আপডেট করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.updateTelegram = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const link = document.getElementById('telegramLink').value.trim();
+        
+        if (!link) {
+            showError('টেলিগ্রাম লিংক দিন');
+            return;
+        }
+        
+        await db.setConfig('telegram_link', link);
+        
+        await loadSupportSettings();
+        showSuccess('✅ টেলিগ্রাম আপডেট হয়েছে');
+    } catch (error) {
+        showError('আপডেট করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.updateSupportEmail = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const email = document.getElementById('supportEmail').value.trim();
+        
+        if (!email) {
+            showError('ইমেইল দিন');
+            return;
+        }
+        
+        await db.setConfig('support_email', email);
+        
+        await loadSupportSettings();
+        showSuccess('✅ ইমেইল আপডেট হয়েছে');
+    } catch (error) {
+        showError('আপডেট করতে সমস্যা: ' + error.message);
+    }
+};
+
+// ==================== এডমিন চেক ====================
+function checkAdminStatus() {
+    try {
+        const adminBtn = document.getElementById('adminBtn');
+        
+        if (currentUser && currentUser.email === ADMIN_EMAIL) {
+            isAdmin = true;
+            adminBtn.classList.remove('hidden');
+            console.log('Admin access granted for:', currentUser.email);
+        } else {
+            isAdmin = false;
+            adminBtn.classList.add('hidden');
+        }
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        isAdmin = false;
+        document.getElementById('adminBtn').classList.add('hidden');
+    }
+}
+
+// ==================== পেজ নেভিগেশন ====================
+window.showPage = async (pageId, element) => {
+    try {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const page = document.getElementById(pageId);
+        if (page) {
+            page.classList.add('active');
+            
+            if (pageId === 'tournament') await loadTournaments();
+            if (pageId === 'history' && currentUser) await loadUserHistory();
+            if (pageId === 'account') document.getElementById('account').innerHTML = renderAccount();
+        }
+        
+        if (element) {
+            document.querySelectorAll('.nav-item-bottom').forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+        }
+        
+        window.scrollTo(0, 0);
+    } catch (error) {
+        console.error('Error changing page:', error);
+        showError('পৃষ্ঠা পরিবর্তন করতে সমস্যা হয়েছে।');
+    }
+};
+
+// ==================== রেন্ডার ফাংশন ====================
+function renderHome() {
+    return `
+        <div class="website-header">
+            <h1>tunff09</h1>
+            <p class="mt-2">ফ্রি ফায়ার টুর্নামেন্ট প্ল্যাটফর্ম</p>
+        </div>
+        
+        <div class="tournament-banner">
+            <h3>🏆 প্রতি সপ্তাহ ২০,০০০ টাকার টুর্নামেন্ট 🏆</h3>
+            <p class="mt-2">টুর্নামেন্ট চলবে যতক্ষণ না ইউজারের কয়েন শেষ হয়</p>
+        </div>
+        
+        ${!currentUser ? `
+            <div class="glass-card text-center">
+                <h5>একাউন্ট তৈরি করুন</h5>
+                <p class="text-muted small">টুর্নামেন্টে অংশগ্রহণের জন্য অ্যাকাউন্ট প্রয়োজন</p>
+                <button class="btn-primary-custom mt-2" onclick="showPage('account')">লগইন / সাইন আপ</button>
+            </div>
+        ` : ''}
+        
+        <div class="glass-card">
+            <h6 class="fw-bold mb-3"><i class="bi bi-megaphone me-2"></i>নোটিশ বোর্ড</h6>
+            <p id="app-notice" class="small text-muted m-0">লোড হচ্ছে...</p>
+        </div>
+        
+        ${renderFooter()}
+    `;
+}
+
+function renderTask() {
+    return `
+        <h5 class="fw-bold mb-3"><i class="bi bi-list-task me-2"></i>ডেইলি টাস্ক</h5>
+        <div id="tasksContainer" class="mb-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <h5 class="fw-bold mb-3 mt-4"><i class="bi bi-youtube me-2" style="color:#ff0000;"></i>ইউটিউব কোড টাস্ক</h5>
+        <div id="youtubeTasksContainer" class="mb-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        ${renderFooter()}
+    `;
+}
+
+function renderTournament() {
+    return `
+        <h5 class="fw-bold mb-3"><i class="bi bi-trophy me-2"></i>চলমান টুর্নামেন্ট</h5>
+        
+        <div class="alert alert-info custom-alert mb-3">
+            <strong>টুর্নামেন্ট তথ্য:</strong><br>
+            • প্রতি টুর্নামেন্টে র‍্যান্ডম ৫০+ জন পাবে রুম আইডি<br>
+            • সিলেকশন রাউন্ড অনুযায়ী নতুন প্লেয়াররা সুযোগ পাবে<br>
+            • আগের সিলেক্ট হওয়া প্লেয়াররা পরবর্তী রাউন্ডে সিলেক্ট হবেন না
+        </div>
+        
+        <div id="tournamentsContainer" class="mb-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        ${renderFooter()}
+    `;
+}
+
+function renderHistory() {
+    if (!currentUser) {
+        return `
+            <div class="glass-card text-center">
+                <i class="bi bi-clock-history display-4 text-muted"></i>
+                <h5 class="mt-3">হিস্ট্রি দেখতে লগইন করুন</h5>
+                <button class="btn-primary-custom mt-2" onclick="showPage('account')">লগইন / সাইন আপ</button>
+            </div>
+            ${renderFooter()}
+        `;
+    }
+    
+    return `
+        <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>আমার টুর্নামেন্ট হিস্ট্রি</h5>
+        <div id="userHistoryContainer" class="mb-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        ${renderFooter()}
+    `;
+}
+
+function renderAbout() {
+    return `
+        <h5 class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i>টুর্নামেন্ট সম্পর্কে</h5>
+        <div class="glass-card">
+            <p id="about-text" class="small text-muted m-0">লোড হচ্ছে...</p>
+        </div>
+        ${renderFooter()}
+    `;
+}
+
+function renderAccount() {
+    if (!currentUser) {
+        return `
+            <div class="glass-card">
+                <h5 class="text-center fw-bold mb-4">স্বাগতম</h5>
+                <input type="email" id="loginEmail" class="form-control mb-3" placeholder="আপনার ইমেইল">
+                <input type="password" id="loginPassword" class="form-control mb-3" placeholder="পাসওয়ার্ড">
+                <input type="text" id="loginFFID" class="form-control mb-3 hidden" placeholder="Free Fire ID (নতুন একাউন্টের জন্য)">
+                <input type="text" id="loginPhone" class="form-control mb-3 hidden" placeholder="WhatsApp নাম্বার (নতুন একাউন্টের জন্য)">
+                <button class="btn-primary-custom mb-2" onclick="handleLogin()">লগইন</button>
+                <button class="btn btn-link w-100 text-muted small" onclick="toggleSignup()">নতুন একাউন্ট তৈরি করুন</button>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="glass-card">
+                <div class="text-center mb-4">
+                    <div class="mx-auto bg-gradient d-flex align-items-center justify-content-center rounded-circle mb-3" 
+                         style="width:80px; height:80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="bi bi-person text-white" style="font-size: 40px;"></i>
+                    </div>
+                    <h5 class="fw-bold m-0">${currentUser.email?.split('@')[0]}</h5>
+                    <p class="small text-muted mb-3">${currentUser.email}</p>
+                </div>
+                
+                <div class="stat-card mb-3">
+                    <span class="small text-muted">আপনার কয়েন</span>
+                    <h3 class="fw-bold text-primary m-0" id="p-coins">${currentUser.coins || 0}</h3>
+                </div>
+                
+                <div class="bg-light p-3 rounded-3 mb-3">
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                        <span class="small">ভেরিফিকেশন স্ট্যাটাস:</span>
+                        <span id="p-status" class="status-badge ${currentUser.verified ? 'status-ongoing' : 'status-upcoming'}">
+                            ${currentUser.verified ? 'Verified' : 'Pending'}
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="small">FF ID:</span>
+                        <span id="p-ffid" class="fw-bold small">${currentUser.ffid || '---'}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <span class="small">WhatsApp:</span>
+                        <span id="p-phone" class="fw-bold small">${currentUser.phone || '---'}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <span class="small">টাস্ক সম্পন্ন:</span>
+                        <span id="p-tasks" class="fw-bold small">${currentUser.tasksCompleted || 0}</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-outline-danger w-100 mt-3 rounded-pill" onclick="logout()">লগআউট</button>
+            </div>
+            ${renderFooter()}
+        `;
+    }
+}
+
+function renderFooter() {
+    return `
+        <footer class="footer mt-4 text-center text-muted small">
+            <p class="mb-1">&copy; 2024 tunff09 - সমস্ত অধিকার সংরক্ষিত</p>
+        </footer>
+    `;
+}
+
+// ==================== অথ ফাংশন (লগইন/সাইনআপ) ====================
+let isSignup = false;
+
+window.toggleSignup = () => {
+    isSignup = !isSignup;
+    const ffidField = document.getElementById('loginFFID');
+    const phoneField = document.getElementById('loginPhone');
+    const loginBtn = document.querySelector('.btn-primary-custom');
+    
+    if (isSignup) {
+        ffidField.classList.remove('hidden');
+        phoneField.classList.remove('hidden');
+        loginBtn.textContent = 'নতুন একাউন্ট তৈরি করুন';
+    } else {
+        ffidField.classList.add('hidden');
+        phoneField.classList.add('hidden');
+        loginBtn.textContent = 'লগইন';
+    }
+};
+
+window.handleLogin = async () => {
+    try {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        
+        if (!email || !password) {
+            showError('ইমেইল এবং পাসওয়ার্ড দিন!');
+            return;
+        }
+        
+        if (isSignup) {
+            // সাইনআপ
+            const ffid = document.getElementById('loginFFID').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
+            
+            if (!ffid || !phone) {
+                showError('FF ID এবং ফোন নাম্বার দিন!');
+                return;
+            }
+            
+            // ইমেইল ইউনিক কিনা চেক
+            const existingUser = await db.getUserByEmail(email);
+            
+            if (existingUser) {
+                showError('এই ইমেইল already exists!');
+                return;
+            }
+            
+            const newUser = {
+                uid: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                email: email,
+                password: password,
+                ffid: ffid,
+                phone: phone,
+                coins: 10,
+                tasksCompleted: 0,
+                verified: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            const result = await db.createUser(newUser);
+            
+            if (result.success) {
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                
+                checkAdminStatus();
+                showSuccess('✅ অ্যাকাউন্ট তৈরি হয়েছে! ১০ কয়েন বোনাস');
+                showPage('home');
+                document.getElementById('account').innerHTML = renderAccount();
+            } else {
+                showError(result.error || 'একাউন্ট তৈরি করতে সমস্যা হয়েছে');
+            }
+        } else {
+            // লগইন
+            const user = await db.getUserByEmailAndPassword(email, password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                checkAdminStatus();
+                showSuccess('✅ লগইন সফল হয়েছে!');
+                showPage('home');
+                document.getElementById('account').innerHTML = renderAccount();
+                await loadUserHistory();
+            } else {
+                showError('ইমেইল বা পাসওয়ার্ড ভুল!');
+            }
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showError('লগইন প্রক্রিয়ায় সমস্যা হয়েছে: ' + error.message);
+    }
+};
+
+window.logout = () => {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    isAdmin = false;
+    document.getElementById('adminBtn').classList.add('hidden');
+    showPage('home');
+    document.getElementById('account').innerHTML = renderAccount();
+    showSuccess('👋 লগআউট সফল হয়েছে');
+};
+
+// ==================== নোটিশ ফাংশন ====================
+async function loadNotice() {
+    try {
+        const notice = await db.getConfig('notice');
+        const noticeEl = document.getElementById('app-notice');
+        if (noticeEl) {
+            noticeEl.innerText = notice || 'বর্তমানে কোনো নতুন নোটিশ নেই।';
+        }
+    } catch (error) {
+        console.error('Error loading notice:', error);
+    }
+}
+
+// ==================== এবাউট ফাংশন ====================
+async function loadAbout() {
+    try {
+        const about = await db.getConfig('about');
+        const aboutEl = document.getElementById('about-text');
+        if (aboutEl) {
+            aboutEl.innerHTML = about ? about.replace(/\n/g, '<br>') : 
+                '১. টুর্নামেন্টে কোন চিটিংবাজি করা যাবে না\n২. ফোন হ্যাক ইউজ করা যাবে না\n৩. আইডি হতে হবে ৪০ লেভেলের উপরে';
+        }
+    } catch (error) {
+        console.error('Error loading about:', error);
+    }
+}
+
+// ==================== ইউটিউব কোড টাস্ক ফাংশন ====================
+async function loadYouTubeCodeTasks() {
+    try {
+        const tasks = await db.getAllYouTubeCodeTasks();
+        const container = document.getElementById('youtubeTasksContainer');
+        if (!container) return;
+        
+        if (tasks.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted">কোন ইউটিউব কোড টাস্ক নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        for (const task of tasks) {
+            let completed = false;
+            if (currentUser) {
+                const completedTasks = await db.getUserCompletedYouTubeTasks(currentUser.uid);
+                completed = completedTasks.some(ct => ct.taskId === task.id);
+            }
+            
+            const isExpired = task.validUntil && new Date(task.validUntil) < new Date();
+            
+            html += `
+                <div class="glass-card mb-2 youtube-task">
+                    <h6 class="fw-bold">${task.title}</h6>
+                    <p class="small text-muted mb-2">${task.description || 'ইউটিউব ভিডিও দেখুন এবং কোড সংগ্রহ করুন'}</p>
+                    <p class="small">
+                        <i class="bi bi-youtube text-danger"></i> 
+                        <a href="${task.videoLink}" target="_blank" class="text-decoration-none">ভিডিওটি দেখুন</a>
+                    </p>
+                    
+                    ${!completed && !isExpired && currentUser ? `
+                        <div class="input-group mb-2">
+                            <input type="text" id="code_${task.id}" class="form-control code-input" placeholder="ভিডিওর কোড দিন" maxlength="20">
+                            <button class="btn btn-danger" onclick="verifyYouTubeCode(${task.id}, ${task.reward})">যাচাই করুন</button>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="badge bg-danger">+${task.reward} কয়েন</span>
+                        ${completed ? 
+                            '<span class="badge bg-success">সম্পন্ন হয়েছে</span>' : 
+                            isExpired ? 
+                            '<span class="badge bg-secondary">মেয়াদ উত্তীর্ণ</span>' : 
+                            '<span class="badge bg-warning">অপেক্ষমান</span>'
+                        }
+                        <small class="text-muted">ভ্যালিড: ${new Date(task.validUntil).toLocaleDateString()}</small>
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading YouTube tasks:', error);
+    }
+}
+
+window.verifyYouTubeCode = async (taskId, reward) => {
+    try {
+        if (!currentUser) {
+            showError('প্রথমে লগইন করুন');
+            return;
+        }
+        
+        const codeInput = document.getElementById(`code_${taskId}`);
+        const enteredCode = codeInput.value.trim().toUpperCase();
+        
+        if (!enteredCode) {
+            showError('কোড দিন');
+            return;
+        }
+        
+        // রিওয়ার্ডেড অ্যাড দেখাও (টাস্কের জন্য)
+        if (typeof show_10698833 === 'function') {
+            try {
+                await show_10698833('pop');
+            } catch (adError) {
+                console.log('Ad error:', adError);
+                // অ্যাড না দেখালেও চলবে
+            }
+        }
+        
+        const result = await db.verifyYouTubeCode(currentUser.uid, taskId, enteredCode, reward);
+        
+        if (result.success) {
+            currentUser.coins += reward;
+            currentUser.tasksCompleted = (currentUser.tasksCompleted || 0) + 1;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showSuccess(`✅ সঠিক কোড! +${reward} কয়েন পেয়েছেন!`);
+            await loadYouTubeCodeTasks();
+            document.getElementById('account').innerHTML = renderAccount();
+        } else {
+            showError(result.message || 'ভুল কোড! আবার চেষ্টা করুন');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+// ==================== রেগুলার টাস্ক ফাংশন ====================
+async function loadTasks() {
+    try {
+        const tasks = await db.getAllTasks();
+        const container = document.getElementById('tasksContainer');
+        if (!container) return;
+        
+        if (tasks.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted">কোন টাস্ক নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        for (const task of tasks) {
+            let completed = false;
+            if (currentUser) {
+                const completedTasks = await db.getUserCompletedTasks(currentUser.uid);
+                completed = completedTasks.some(ct => ct.taskId === task.id);
+            }
+            
+            html += `
+                <div class="glass-card mb-2">
+                    <h6 class="fw-bold">${task.title}</h6>
+                    <p class="small text-muted mb-2">${task.description}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">+${task.reward} কয়েন</span>
+                        ${completed ? 
+                            '<span class="badge bg-success">সম্পন্ন হয়েছে</span>' :
+                            `<button class="btn btn-sm btn-outline-primary rounded-pill px-3" 
+                                    onclick="completeTask(${task.id}, ${task.reward})"
+                                    ${!currentUser ? 'disabled' : ''}>
+                                সম্পন্ন করুন
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+    }
+}
+
+window.completeTask = async (taskId, reward) => {
+    try {
+        if (!currentUser) {
+            showError('প্রথমে লগইন করুন');
+            showPage('account');
+            return;
+        }
+        
+        // রিওয়ার্ডেড অ্যাড দেখাও (টাস্কের জন্য)
+        if (typeof show_10698833 === 'function') {
+            try {
+                await show_10698833('pop');
+            } catch (adError) {
+                console.log('Ad error:', adError);
+            }
+        }
+        
+        await db.completeTask(currentUser.uid, taskId, reward);
+        
+        currentUser.coins += reward;
+        currentUser.tasksCompleted = (currentUser.tasksCompleted || 0) + 1;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        showSuccess(`✅ +${reward} কয়েন পেয়েছেন!`);
+        await loadTasks();
+        document.getElementById('account').innerHTML = renderAccount();
+    } catch (error) {
+        if (error.message === 'Task already completed') {
+            showError('আপনি ইতিমধ্যে এই টাস্ক সম্পন্ন করেছেন!');
+        } else {
+            showError('টাস্ক সম্পন্ন করতে সমস্যা: ' + error.message);
+        }
+    }
+};
+
+// ==================== টুর্নামেন্ট ফাংশন ====================
+async function loadTournaments() {
+    try {
+        const tournaments = await db.getAllTournaments();
+        const container = document.getElementById('tournamentsContainer');
+        if (!container) return;
+        
+        if (tournaments.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted">কোন টুর্নামেন্ট নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tournaments.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+        
+        for (const t of tournaments) {
+            let userJoined = false;
+            if (currentUser) {
+                const participants = await db.getTournamentParticipants(t.id);
+                userJoined = participants.some(p => p.userId === currentUser.uid);
+            }
+            
+            const statusClass = `status-${t.status}`;
+            const statusText = {
+                'upcoming': 'আসন্ন',
+                'ongoing': 'চলছে',
+                'selection': 'সিলেকশন চলছে',
+                'completed': 'শেষ'
+            }[t.status] || t.status;
+            
+            html += `
+                <div class="tourney-card">
+                    <div class="tourney-header">
+                        <span><i class="bi bi-trophy-fill me-1"></i> Entry: ${t.entryFee} Coins</span>
+                        <span>Prize: ${t.prizePool} TK</span>
+                    </div>
+                    <div class="tourney-body">
+                        <h6 class="fw-bold">${t.name}</h6>
+                        <p class="small text-muted mb-2">
+                            <i class="bi bi-people me-1"></i> ${t.type} | ${t.map}<br>
+                            <i class="bi bi-calendar me-1"></i> ${new Date(t.startTime).toLocaleString()}<br>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            <span class="ms-2">${t.currentParticipants || 0}/${t.maxPlayers} জয়েন করেছে</span>
+                        </p>
+                        
+                        ${t.roomDetails && t.status === 'ongoing' ? `
+                            <div class="room-details">
+                                <small class="text-muted">রুম আইডি: ${t.roomDetails.roomId}</small><br>
+                                <small class="text-muted">পাসওয়ার্ড: ${t.roomDetails.password}</small>
+                            </div>
+                        ` : ''}
+                        
+                        ${!userJoined && t.status === 'upcoming' ? `
+                            <button class="btn btn-dark btn-sm w-100 rounded-pill" 
+                                    onclick="joinTournament(${t.id}, ${t.entryFee})"
+                                    ${!currentUser || !currentUser.verified ? 'disabled' : ''}>
+                                ${!currentUser ? 'জয়েন করতে লগইন করুন' : 
+                                  !currentUser.verified ? 'ভেরিফাই করুন' : 'জয়েন করুন'}
+                            </button>
+                        ` : userJoined ? `
+                            <div class="text-center text-success small">
+                                <i class="bi bi-check-circle"></i> আপনি জয়েন করেছেন
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tournaments:', error);
+    }
+}
+
+window.joinTournament = async (tournamentId, entryFee) => {
+    try {
+        if (!currentUser) {
+            showError('প্রথমে লগইন করুন');
+            showPage('account');
+            return;
+        }
+        
+        if (!currentUser.verified) {
+            showError('প্রথমে অ্যাকাউন্ট ভেরিফাই করুন (এডমিনের সাথে যোগাযোগ করুন)');
+            return;
+        }
+        
+        if (currentUser.coins < entryFee) {
+            showError('পর্যাপ্ত কয়েন নেই! টাস্ক সম্পন্ন করে কয়েন সংগ্রহ করুন');
+            return;
+        }
+        
+        const result = await db.joinTournament(tournamentId, currentUser.uid, {
+            ffid: currentUser.ffid,
+            phone: currentUser.phone,
+            email: currentUser.email
+        });
+        
+        if (result.success) {
+            currentUser.coins -= entryFee;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showSuccess('✅ টুর্নামেন্টে জয়েন করেছেন!');
+            await loadTournaments();
+            document.getElementById('account').innerHTML = renderAccount();
+        } else {
+            showError(result.error || 'জয়েন করতে সমস্যা হয়েছে');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+// ==================== ইউজার হিস্ট্রি ====================
+async function loadUserHistory() {
+    try {
+        if (!currentUser) return;
+        
+        const history = await db.getUserTournaments(currentUser.uid);
+        const container = document.getElementById('userHistoryContainer');
+        
+        if (!container) return;
+        
+        if (history.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted">কোন টুর্নামেন্টে জয়েন করেননি</p>';
+            return;
+        }
+        
+        let html = '';
+        for (const item of history) {
+            const statusClass = `status-${item.status}`;
+            const statusText = {
+                'joined': 'জয়েন করেছেন',
+                'selected': 'সিলেক্টেড',
+                'room_received': 'রুম পেয়েছেন',
+                'completed': 'সম্পন্ন'
+            }[item.status] || item.status;
+            
+            html += `
+                <div class="tourney-card">
+                    <div class="tourney-body">
+                        <h6 class="fw-bold">${item.tournamentDetails.name}</h6>
+                        <p class="small text-muted mb-2">
+                            <i class="bi bi-calendar me-1"></i> ${new Date(item.joinedAt).toLocaleString()}<br>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            ${item.selectionRound ? `<span class="ms-2">রাউন্ড: ${item.selectionRound}</span>` : ''}
+                        </p>
+                        
+                        ${item.roomReceived && item.tournamentDetails.roomDetails ? `
+                            <div class="room-details">
+                                <small class="text-muted">রুম আইডি: ${item.tournamentDetails.roomDetails.roomId}</small><br>
+                                <small class="text-muted">পাসওয়ার্ড: ${item.tournamentDetails.roomDetails.password}</small>
+                            </div>
+                        ` : item.status === 'selected' ? `
+                            <div class="alert alert-warning small p-2">
+                                <i class="bi bi-hourglass-split"></i> রুম আইডির জন্য অপেক্ষা করছেন...
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading user history:', error);
+    }
+}
+
+// ==================== এডমিন ফাংশন ====================
+window.toggleAdminPanel = (show) => {
+    try {
+        if (!isAdmin) {
+            showError('শুধুমাত্র এডমিন এই প্যানেল ব্যবহার করতে পারবেন');
+            return;
+        }
+        
+        document.getElementById('adminPanel').classList.toggle('show', show);
+        if (show) {
+            loadAdminData();
+        }
+    } catch (error) {
+        console.error('Error toggling admin panel:', error);
+        showError('এডমিন প্যানেল ওপেন করতে সমস্যা হয়েছে।');
+    }
+};
+
+async function loadAdminData() {
+    try {
+        if (!isAdmin) return;
+        
+        await loadUsersList();
+        await loadTasksList();
+        await loadYouTubeTasksList();
+        await loadTournamentsList();
+        await loadTournamentSelect();
+        await loadSupportSettings();
+        await loadStatistics();
+        await loadAboutForEdit();
+    } catch (error) {
+        console.error('Error loading admin data:', error);
+        showError('এডমিন ডাটা লোড করতে সমস্যা হয়েছে।');
+    }
+}
+
+async function loadStatistics() {
+    try {
+        const users = await db.getAllUsers();
+        const tasks = await db.getAllTasks();
+        const youtubeTasks = await db.getAllYouTubeCodeTasks();
+        const tournaments = await db.getAllTournaments();
+        const completedTasks = await db.getAllCompletedTasks();
+        const completedYouTubeTasks = await db.getAllCompletedYouTubeTasks();
+        
+        document.getElementById('totalUsers').textContent = users.length;
+        document.getElementById('verifiedUsers').textContent = users.filter(u => u.verified).length;
+        document.getElementById('totalTasksCompleted').textContent = completedTasks.length + completedYouTubeTasks.length;
+        document.getElementById('totalTournaments').textContent = tournaments.length;
+        document.getElementById('youtubeTasksCount').textContent = youtubeTasks.length;
+        
+        // মোট কয়েন দেওয়া
+        let totalCoins = 0;
+        users.forEach(u => totalCoins += (u.coins || 0));
+        document.getElementById('totalCoinsGiven').textContent = totalCoins;
+        
+        // লিডারবোর্ড
+        const userTaskCounts = [];
+        for (const user of users) {
+            const userTasks = completedTasks.filter(ct => ct.userId === user.uid).length;
+            const userYouTubeTasks = completedYouTubeTasks.filter(ct => ct.userId === user.uid).length;
+            const total = userTasks + userYouTubeTasks;
+            if (total > 0) {
+                userTaskCounts.push({
+                    email: user.email,
+                    ffid: user.ffid,
+                    count: total
+                });
+            }
+        }
+        
+        userTaskCounts.sort((a, b) => b.count - a.count);
+        
+        let leaderboardHtml = '';
+        userTaskCounts.slice(0, 10).forEach((u, index) => {
+            leaderboardHtml += `
+                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <span><strong>${index + 1}.</strong> ${u.ffid || u.email}</span>
+                    <span class="badge bg-primary">${u.count} টাস্ক</span>
+                </div>
+            `;
+        });
+        
+        if (!leaderboardHtml) leaderboardHtml = '<p class="text-muted">কোন ডাটা নেই</p>';
+        document.getElementById('userLeaderboard').innerHTML = leaderboardHtml;
+        
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
+async function loadUsersList() {
+    try {
+        const users = await db.getAllUsers();
+        let html = '<table class="table table-hover table-custom"><thead><tr><th>ইমেইল</th><th>FF ID</th><th>ফোন</th><th>কয়েন</th><th>টাস্ক</th><th>স্ট্যাটাস</th></tr></thead><tbody>';
+        
+        users.forEach(user => {
+            html += `
+                <tr>
+                    <td>${user.email || 'N/A'}</td>
+                    <td>${user.ffid || '---'}</td>
+                    <td>${user.phone || '---'}</td>
+                    <td>${user.coins || 0}</td>
+                    <td>${user.tasksCompleted || 0}</td>
+                    <td><span class="badge ${user.verified ? 'bg-success' : 'bg-warning'}">${user.verified ? 'Verified' : 'Pending'}</span></td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        document.getElementById('usersList').innerHTML = html;
+    } catch (error) {
+        console.error('Error loading users list:', error);
+    }
+}
+
+async function loadTasksList() {
+    try {
+        const tasks = await db.getAllTasks();
+        let html = '<div class="list-group">';
+        
+        tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(task => {
+            html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">${task.title}</h6>
+                        <small>+${task.reward} coins | ${task.type}</small>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">ডিলিট</button>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        document.getElementById('tasksList').innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tasks list:', error);
+    }
+}
+
+async function loadYouTubeTasksList() {
+    try {
+        const tasks = await db.getAllYouTubeCodeTasks();
+        let html = '<div class="list-group">';
+        
+        tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(task => {
+            html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">${task.title}</h6>
+                        <small>কোড: ${task.code} | +${task.reward} coins</small><br>
+                        <small class="text-muted">ভ্যালিড: ${new Date(task.validUntil).toLocaleString()}</small>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteYouTubeTask(${task.id})">ডিলিট</button>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        document.getElementById('youtubeTasksList').innerHTML = html;
+    } catch (error) {
+        console.error('Error loading YouTube tasks list:', error);
+    }
+}
+
+async function loadTournamentsList() {
+    try {
+        const tournaments = await db.getAllTournaments();
+        let html = '<div class="list-group">';
+        
+        tournaments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(t => {
+            html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">${t.name}</h6>
+                        <small>Entry: ${t.entryFee} | Prize: ${t.prizePool} | Status: ${t.status}</small>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTournament(${t.id})">ডিলিট</button>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        document.getElementById('tournamentsList').innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tournaments list:', error);
+    }
+}
+
+async function loadTournamentSelect() {
+    try {
+        const tournaments = await db.getAllTournaments();
+        const select = document.getElementById('manageTournamentSelect');
+        
+        let options = '<option value="">টুর্নামেন্ট নির্বাচন করুন</option>';
+        tournaments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(t => {
+            options += `<option value="${t.id}">${t.name} (${t.currentParticipants || 0}/${t.maxPlayers})</option>`;
+        });
+        
+        select.innerHTML = options;
+    } catch (error) {
+        console.error('Error loading tournament select:', error);
+    }
+}
+
+let currentManageTournament = null;
+
+window.loadTournamentForManagement = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const select = document.getElementById('manageTournamentSelect');
+        const tournamentId = select.value;
+        
+        if (!tournamentId) {
+            document.getElementById('tournamentManageContent').classList.add('hidden');
+            return;
+        }
+        
+        const tournament = await db.getTournament(tournamentId);
+        if (!tournament) {
+            showError('টুর্নামেন্ট পাওয়া যায়নি');
+            return;
+        }
+        
+        currentManageTournament = tournament;
+        
+        document.getElementById('manageTournamentName').textContent = tournament.name;
+        document.getElementById('joinedCount').textContent = tournament.currentParticipants || 0;
+        document.getElementById('selectedCount').textContent = tournament.selectedParticipants || 0;
+        document.getElementById('maxCount').textContent = tournament.maxPlayers;
+        
+        await loadParticipantsList(tournamentId);
+        await loadSelectionHistory(tournamentId);
+        
+        if (tournament.roomDetails) {
+            const roomDiv = document.getElementById('currentRoomDetails');
+            roomDiv.innerHTML = `
+                <small class="text-muted">বর্তমান রুম আইডি: ${tournament.roomDetails.roomId}</small><br>
+                <small class="text-muted">পাসওয়ার্ড: ${tournament.roomDetails.password}</small>
+            `;
+            roomDiv.classList.remove('hidden');
+        } else {
+            document.getElementById('currentRoomDetails').classList.add('hidden');
+        }
+        
+        document.getElementById('tournamentManageContent').classList.remove('hidden');
+    } catch (error) {
+        console.error('Error loading tournament for management:', error);
+        showError('টুর্নামেন্ট ডাটা লোড করতে সমস্যা হয়েছে');
+    }
+};
+
+async function loadParticipantsList(tournamentId) {
+    try {
+        const participants = await db.getTournamentParticipants(tournamentId);
+        const container = document.getElementById('participantsList');
+        
+        if (participants.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন প্লেয়ার জয়েন করেনি</p>';
+            return;
+        }
+        
+        let html = '';
+        participants.sort((a, b) => new Date(b.joinedAt) - new Date(a.joinedAt)).forEach(p => {
+            const selectedClass = p.status === 'selected' || p.status === 'room_received' ? 'selected' : '';
+            const statusBadge = {
+                'joined': '<span class="badge bg-secondary">জয়েন করেছে</span>',
+                'selected': '<span class="badge bg-warning">সিলেক্টেড</span>',
+                'room_received': '<span class="badge bg-success">রুম পেয়েছে</span>',
+                'completed': '<span class="badge bg-info">সম্পন্ন</span>'
+            }[p.status] || '';
+            
+            html += `
+                <div class="participant-item ${selectedClass}">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>${p.ffid || 'N/A'}</strong><br>
+                            <small>${p.email}</small><br>
+                            <small>📱 ${p.phone || 'N/A'}</small>
+                        </div>
+                        <div class="text-end">
+                            ${statusBadge}
+                            ${p.selectionRound ? `<div><small>রাউন্ড: ${p.selectionRound}</small></div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading participants:', error);
+    }
+}
+
+async function loadSelectionHistory(tournamentId) {
+    try {
+        const selections = await db.getTournamentSelections(tournamentId);
+        const container = document.getElementById('selectionHistory');
+        
+        if (selections.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন সিলেকশন রাউন্ড হয়নি</p>';
+            return;
+        }
+        
+        let html = '<h6 class="small fw-bold">সিলেকশন হিস্ট্রি:</h6>';
+        selections.sort((a, b) => b.round - a.round).forEach(s => {
+            html += `
+                <div class="alert alert-info p-2 mb-1 small">
+                    <strong>রাউন্ড ${s.round}:</strong> ${s.selectedCount} জন সিলেক্ট হয়েছে<br>
+                    <small>${new Date(s.selectedAt).toLocaleString()}</small>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading selection history:', error);
+    }
+}
+
+window.selectRandomPlayers = async () => {
+    try {
+        if (!isAdmin || !currentManageTournament) return;
+        
+        const count = document.getElementById('selectCount').value;
+        if (!count || count < 1) {
+            showError('কতজন সিলেক্ট করবেন তা দিন');
+            return;
+        }
+        
+        const result = await db.selectRandomParticipants(currentManageTournament.id, parseInt(count));
+        showSuccess(`✅ রাউন্ড ${result.round}: ${result.selected.length} জন সিলেক্ট হয়েছে!`);
+        
+        await loadTournamentForManagement();
+        await loadTournaments();
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+window.setRoomDetails = async () => {
+    try {
+        if (!isAdmin || !currentManageTournament) return;
+        
+        const roomId = document.getElementById('roomId').value.trim();
+        const password = document.getElementById('roomPassword').value.trim();
+        
+        if (!roomId || !password) {
+            showError('রুম আইডি এবং পাসওয়ার্ড দিন');
+            return;
+        }
+        
+        const result = await db.setRoomDetails(currentManageTournament.id, roomId, password);
+        
+        if (result.success) {
+            showSuccess('✅ রুম ডিটেইলস সেট করা হয়েছে!');
+            await loadTournamentForManagement();
+            await loadTournaments();
+            if (currentUser) await loadUserHistory();
+            
+            document.getElementById('roomId').value = '';
+            document.getElementById('roomPassword').value = '';
+        } else {
+            showError(result.error || 'রুম ডিটেইলস সেট করতে সমস্যা হয়েছে');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+window.searchParticipant = async () => {
+    try {
+        if (!isAdmin || !currentManageTournament) return;
+        
+        const searchTerm = document.getElementById('participantSearch').value.toLowerCase().trim();
+        if (!searchTerm) {
+            document.getElementById('participantSearchResult').innerHTML = '';
+            return;
+        }
+        
+        const participants = await db.getTournamentParticipants(currentManageTournament.id);
+        
+        const results = participants.filter(p => 
+            (p.ffid && p.ffid.toLowerCase().includes(searchTerm)) ||
+            (p.email && p.email.toLowerCase().includes(searchTerm)) ||
+            (p.phone && p.phone.includes(searchTerm))
+        );
+        
+        const container = document.getElementById('participantSearchResult');
+        
+        if (results.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন প্লেয়ার পাওয়া যায়নি</p>';
+            return;
+        }
+        
+        let html = '<h6 class="small fw-bold">সার্চ রেজাল্ট:</h6>';
+        results.forEach(p => {
+            html += `
+                <div class="participant-item">
+                    <strong>${p.ffid || 'N/A'}</strong><br>
+                    <small>${p.email}</small><br>
+                    <small>📱 ${p.phone || 'N/A'}</small><br>
+                    <span class="badge bg-info">স্ট্যাটাস: ${p.status}</span>
+                    ${p.selectionRound ? `<span class="badge bg-warning">রাউন্ড: ${p.selectionRound}</span>` : ''}
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error searching participant:', error);
+        showError('সার্চ করতে সমস্যা হয়েছে');
+    }
+};
+
+// ==================== এডমিন ক্রিয়েট/আপডেট/ডিলিট ফাংশন ====================
+window.addTask = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const title = document.getElementById('taskTitle').value.trim();
+        const desc = document.getElementById('taskDesc').value.trim();
+        const reward = document.getElementById('taskReward').value.trim();
+        const type = document.getElementById('taskType').value;
+        const link = document.getElementById('taskLink').value.trim();
+        
+        if (!title || !desc || !reward) {
+            showError('সব ফিল্ড পূরণ করুন');
+            return;
+        }
+        
+        const result = await db.createTask({
+            title,
+            description: desc,
+            reward: parseInt(reward),
+            type,
+            link: link || null
+        });
+        
+        if (result.success) {
+            showSuccess('✅ টাস্ক যোগ করা হয়েছে');
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDesc').value = '';
+            document.getElementById('taskReward').value = '';
+            document.getElementById('taskLink').value = '';
+            
+            await loadTasksList();
+            await loadTasks();
+        } else {
+            showError(result.error || 'টাস্ক যোগ করতে সমস্যা');
+        }
+    } catch (error) {
+        showError('টাস্ক যোগ করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.deleteTask = async (id) => {
+    try {
+        if (!isAdmin) return;
+        
+        if (confirm('টাস্ক ডিলিট করবেন?')) {
+            const result = await db.deleteTask(id);
+            if (result.success) {
+                showSuccess('✅ টাস্ক ডিলিট করা হয়েছে');
+                await loadTasksList();
+                await loadTasks();
+            } else {
+                showError(result.error || 'ডিলিট করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('টাস্ক ডিলিট করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.addYouTubeCodeTask = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const title = document.getElementById('youtubeTaskTitle').value.trim();
+        const videoLink = document.getElementById('youtubeTaskLink').value.trim();
+        const code = document.getElementById('youtubeTaskCode').value.trim().toUpperCase();
+        const reward = document.getElementById('youtubeTaskReward').value.trim();
+        const validHours = document.getElementById('youtubeTaskValidHours').value.trim() || 24;
+        
+        if (!title || !videoLink || !code || !reward) {
+            showError('সব ফিল্ড পূরণ করুন');
+            return;
+        }
+        
+        const result = await db.createYouTubeCodeTask({
+            title,
+            videoLink,
+            code,
+            reward: parseInt(reward),
+            validHours: parseInt(validHours)
+        });
+        
+        if (result.success) {
+            showSuccess('✅ ইউটিউব কোড টাস্ক যোগ করা হয়েছে');
+            document.getElementById('youtubeTaskTitle').value = '';
+            document.getElementById('youtubeTaskLink').value = '';
+            document.getElementById('youtubeTaskCode').value = '';
+            document.getElementById('youtubeTaskReward').value = '';
+            
+            await loadYouTubeTasksList();
+            await loadYouTubeCodeTasks();
+        } else {
+            showError(result.error || 'টাস্ক যোগ করতে সমস্যা');
+        }
+    } catch (error) {
+        showError('টাস্ক যোগ করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.deleteYouTubeTask = async (id) => {
+    try {
+        if (!isAdmin) return;
+        
+        if (confirm('ইউটিউব টাস্ক ডিলিট করবেন?')) {
+            const result = await db.deleteYouTubeCodeTask(id);
+            if (result.success) {
+                showSuccess('✅ ইউটিউব টাস্ক ডিলিট করা হয়েছে');
+                await loadYouTubeTasksList();
+                await loadYouTubeCodeTasks();
+            } else {
+                showError(result.error || 'ডিলিট করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('টাস্ক ডিলিট করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.addTournament = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const name = document.getElementById('tournamentName').value.trim();
+        const type = document.getElementById('tournamentType').value;
+        const map = document.getElementById('tournamentMap').value;
+        const entryFee = document.getElementById('entryFee').value.trim();
+        const maxPlayers = document.getElementById('maxPlayers').value.trim();
+        const prizePool = document.getElementById('prizePool').value.trim();
+        const startTime = document.getElementById('startTime').value;
+        
+        if (!name || !entryFee || !maxPlayers || !prizePool || !startTime) {
+            showError('সব ফিল্ড পূরণ করুন');
+            return;
+        }
+        
+        const result = await db.createTournament({
+            name,
+            type,
+            map,
+            entryFee: parseInt(entryFee),
+            maxPlayers: parseInt(maxPlayers),
+            prizePool,
+            startTime
+        });
+        
+        if (result.success) {
+            showSuccess('✅ টুর্নামেন্ট যোগ করা হয়েছে');
+            document.getElementById('tournamentName').value = '';
+            document.getElementById('entryFee').value = '';
+            document.getElementById('maxPlayers').value = '';
+            document.getElementById('prizePool').value = '';
+            document.getElementById('startTime').value = '';
+            
+            await loadTournamentsList();
+            await loadTournamentSelect();
+            await loadTournaments();
+        } else {
+            showError(result.error || 'টুর্নামেন্ট যোগ করতে সমস্যা');
+        }
+    } catch (error) {
+        showError('টুর্নামেন্ট যোগ করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.deleteTournament = async (id) => {
+    try {
+        if (!isAdmin) return;
+        
+        if (confirm('টুর্নামেন্ট ডিলিট করবেন?')) {
+            const result = await db.deleteTournament(id);
+            if (result.success) {
+                showSuccess('✅ টুর্নামেন্ট ডিলিট করা হয়েছে');
+                await loadTournamentsList();
+                await loadTournamentSelect();
+                await loadTournaments();
+            } else {
+                showError(result.error || 'ডিলিট করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('টুর্নামেন্ট ডিলিট করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.updateAbout = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const content = document.getElementById('aboutContent').value.trim();
+        const result = await db.setConfig('about', content);
+        
+        if (result.success) {
+            showSuccess('✅ এবাউট আপডেট হয়েছে');
+            await loadAbout();
+        } else {
+            showError(result.error || 'আপডেট করতে সমস্যা');
+        }
+    } catch (error) {
+        showError('এবাউট আপডেট করতে সমস্যা: ' + error.message);
+    }
+};
+
+async function loadAboutForEdit() {
+    try {
+        const about = await db.getConfig('about');
+        document.getElementById('aboutContent').value = about || '';
+    } catch (error) {
+        console.error('Error loading about for edit:', error);
+    }
+}
+
+// ==================== সার্চ ফাংশন ====================
+window.searchUser = async () => {
+    try {
+        if (!isAdmin) return;
+        
+        const searchTerm = document.getElementById('userSearch').value.trim();
+        const users = await db.searchUsers(searchTerm);
+        
+        const resultDiv = document.getElementById('searchResult');
+        
+        if (users.length === 0) {
+            resultDiv.innerHTML = '<p class="text-muted">কোন ইউজার পাওয়া যায়নি</p>';
+            resultDiv.classList.remove('hidden');
+            return;
+        }
+        
+        let html = '';
+        users.forEach(user => {
+            html += `
+                <div class="border-bottom pb-2 mb-2">
+                    <strong>${user.email}</strong><br>
+                    FFID: ${user.ffid || 'N/A'}<br>
+                    Phone: ${user.phone || 'N/A'}<br>
+                    Coins: ${user.coins || 0}<br>
+                    Tasks: ${user.tasksCompleted || 0}<br>
+                    <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-sm btn-success" onclick="giveCoins('${user.uid}')">
+                            <i class="bi bi-plus-circle"></i> কয়েন যোগ
+                        </button>
+                        ${!user.verified ? `
+                            <button class="btn btn-sm btn-warning" onclick="verifyUser('${user.uid}')">
+                                <i class="bi bi-check-circle"></i> ভেরিফাই
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.uid}')">
+                            <i class="bi bi-trash"></i> ডিলিট
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        resultDiv.innerHTML = html;
+        resultDiv.classList.remove('hidden');
+    } catch (error) {
+        console.error('Error searching user:', error);
+        showError('সার্চ করতে সমস্যা হয়েছে');
+    }
+};
+
+window.giveCoins = async (userId) => {
+    try {
+        if (!isAdmin) return;
+        
+        const amount = prompt('কত কয়েন যোগ করতে চান?');
+        if (amount) {
+            const numAmount = parseInt(amount);
+            if (isNaN(numAmount) || numAmount <= 0) {
+                showError('সঠিক সংখ্যা দিন');
+                return;
+            }
+            
+            const result = await db.updateUserCoins(userId, numAmount);
+            
+            if (result.success) {
+                showSuccess(`✅ ${numAmount} কয়েন যোগ করা হয়েছে!`);
+                await loadUsersList();
+                await loadStatistics();
+                
+                if (currentUser && currentUser.uid === userId) {
+                    currentUser.coins = result.newCoins;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account').innerHTML = renderAccount();
+                }
+            } else {
+                showError(result.error || 'কয়েন যোগ করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('কয়েন যোগ করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.verifyUser = async (userId) => {
+    try {
+        if (!isAdmin) return;
+        
+        if (confirm('এই ইউজারকে ভেরিফাই করবেন?')) {
+            const result = await db.updateUser(userId, { verified: true });
+            
+            if (result.success) {
+                showSuccess('✅ ইউজার ভেরিফাই হয়েছে!');
+                await loadUsersList();
+                await loadStatistics();
+                document.getElementById('searchResult').innerHTML = '';
+                document.getElementById('searchResult').classList.add('hidden');
+                
+                if (currentUser && currentUser.uid === userId) {
+                    currentUser.verified = true;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account').innerHTML = renderAccount();
+                }
+            } else {
+                showError(result.error || 'ভেরিফাই করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('ভেরিফাই করতে সমস্যা: ' + error.message);
+    }
+};
+
+window.deleteUser = async (userId) => {
+    try {
+        if (!isAdmin) return;
+        
+        if (confirm('এই ইউজারকে সম্পূর্ণ ডিলিট করবেন? এই কাজ অপরিবর্তনীয়!')) {
+            const result = await db.deleteUser(userId);
+            
+            if (result.success) {
+                showSuccess('✅ ইউজার ডিলিট করা হয়েছে!');
+                await loadUsersList();
+                await loadStatistics();
+                document.getElementById('searchResult').innerHTML = '';
+                document.getElementById('searchResult').classList.add('hidden');
+                
+                if (currentUser && currentUser.uid === userId) {
+                    logout();
+                }
+            } else {
+                showError(result.error || 'ডিলিট করতে সমস্যা');
+            }
+        }
+    } catch (error) {
+        showError('ইউজার ডিলিট করতে সমস্যা: ' + error.message);
+    }
+};
+</script>
+</body>
+</html>
