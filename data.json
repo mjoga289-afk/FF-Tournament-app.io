@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "config": {
+    "notice": "🎮 নতুন টুর্নামেন্ট শুরু হয়েছে!",
+    "about": "ফ্রি ফায়ার টুর্নামেন্ট প্ল্যাটফর্ম",
+    "whatsapp_number": "8801234567890",
+    "telegram_link": "https://t.me/tunff09",
+    "support_email": "support@tunff09.com"
+  },
+  "sample_tasks": [
+    {
+      "title": "ইউটিউব ভিডিও দেখুন",
+      "reward": 5,
+      "type": "youtube"
+    },
+    {
+      "title": "ডেইলি চেক-ইন",
+      "reward": 2,
+      "type": "daily"
+    }
+  ],
+  "sample_tournament": {
+    "name": "উইকলি চ্যাম্পিয়নশিপ",
+    "entryFee": 10,
+    "prizePool": "৫০০০",
+    "maxPlayers": 100
+  }
+}
