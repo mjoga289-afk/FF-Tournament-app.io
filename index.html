@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tunff09 - Free Fire Tournament</title>
+    
+    <!-- Telegram Ads -->
+    <script src='//libtl.com/sdk.js' data-zone='10698833' data-sdk='show_10698833'></script>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Database -->
+    <script src="database.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: #f8f9fa;
+            padding-bottom: 80px;
+        }
+
+        /* Bottom Navigation */
+        .navbar-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 8px 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .nav-item-bottom {
+            text-align: center;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .nav-item-bottom i {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .nav-item-bottom.active {
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* Main Content */
+        .main-content { 
+            padding: 15px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* Cards */
+        .glass-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        /* Admin Button */
+        .admin-btn-float {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 2000;
+            border: none;
+            display: none;
+        }
+
+        /* Support Buttons */
+        .support-btn-float {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            z-index: 2000;
+        }
+
+        #whatsappBtn {
+            background: #25D366;
+            right: 20px;
+        }
+
+        #telegramBtn {
+            background: #0088cc;
+            top: 80px;
+            right: 20px;
+        }
+
+        /* Admin Panel */
+        .admin-panel-full {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 5000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .admin-panel-full.show {
+            display: block;
+        }
+
+        .admin-tab {
+            display: none;
+        }
+
+        .admin-tab.active {
+            display: block;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-upcoming { background: #e3f2fd; color: #1565c0; }
+        .status-ongoing { background: #c8e6c9; color: #2e7d32; }
+        .status-completed { background: #eee; color: #616161; }
+
+        /* Messages */
+        .success-message, .error-message {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 9999;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<!-- Telegram Ads Auto Show (15 min) -->
+<script>
+    setTimeout(() => {
+        if (typeof show_10698833 === 'function') {
+            show_10698833({
+                type: 'inApp',
+                inAppSettings: {
+                    frequency: 1,
+                    capping: 0.25,
+                    interval: 900,
+                    timeout: 5
+                }
+            });
+        }
+    }, 5000);
+</script>
+
+<!-- Admin Button -->
+<button id="adminBtn" class="admin-btn-float" onclick="toggleAdminPanel()">
+    <i class="bi bi-shield-lock"></i> এডমিন প্যানেল
+</button>
+
+<!-- WhatsApp Button -->
+<a id="whatsappBtn" href="#" target="_blank" class="support-btn-float">
+    <i class="bi bi-whatsapp"></i>
+</a>
+
+<!-- Telegram Button -->
+<a id="telegramBtn" href="#" target="_blank" class="support-btn-float">
+    <i class="bi bi-telegram"></i>
+</a>
+
+<!-- Messages -->
+<div id="successMessage" class="success-message"></div>
+<div id="errorMessage" class="error-message"></div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent"></div>
+
+<!-- ==================== ADMIN PANEL ==================== -->
+<div id="adminPanel" class="admin-panel-full">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold"><i class="bi bi-gear-fill me-2"></i>এডমিন প্যানেল</h4>
+            <button class="btn-close" onclick="toggleAdminPanel()"></button>
+        </div>
+
+        <!-- Admin Tabs -->
+        <ul class="nav nav-tabs mb-3" id="adminTabs">
+            <li class="nav-item">
+                <button class="nav-link active" onclick="showAdminTab('dashboard')">ড্যাশবোর্ড</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('users')">ইউজার ম্যানেজমেন্ট</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('tasks')">টাস্ক ম্যানেজমেন্ট</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('youtube')">ইউটিউব টাস্ক</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('tournaments')">টুর্নামেন্ট</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('manage')">টুর্নামেন্ট ম্যানেজ</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('support')">সাপোর্ট সেটিংস</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('stats')">পরিসংখ্যান</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showAdminTab('about')">এবাউট</button>
+            </li>
+        </ul>
+
+        <!-- Admin Tab Contents -->
+
+        <!-- Dashboard -->
+        <div id="adminDashboard" class="admin-tab active">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="glass-card text-center">
+                        <h3 id="totalUsers">0</h3>
+                        <p>মোট ইউজার</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-card text-center">
+                        <h3 id="verifiedUsers">0</h3>
+                        <p>ভেরিফাইড ইউজার</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-card text-center">
+                        <h3 id="totalTasks">0</h3>
+                        <p>মোট টাস্ক</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-card text-center">
+                        <h3 id="totalTournaments">0</h3>
+                        <p>মোট টুর্নামেন্ট</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Management -->
+        <div id="adminUsers" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">ইউজার সার্চ</h5>
+                <div class="input-group mb-3">
+                    <input type="text" id="userSearchInput" class="form-control" placeholder="FF ID, ইমেইল বা ফোন">
+                    <button class="btn btn-primary" onclick="searchUsers()">সার্চ</button>
+                </div>
+                <div id="userSearchResult" class="mb-3"></div>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">ইউজার লিস্ট</h5>
+                <div id="usersList" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- Tasks Management -->
+        <div id="adminTasks" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">নতুন টাস্ক</h5>
+                <input type="text" id="taskTitle" class="form-control mb-2" placeholder="টাস্ক টাইটেল">
+                <textarea id="taskDesc" class="form-control mb-2" placeholder="বিবরণ" rows="2"></textarea>
+                <div class="row">
+                    <div class="col-6">
+                        <input type="number" id="taskReward" class="form-control mb-2" placeholder="রিওয়ার্ড">
+                    </div>
+                    <div class="col-6">
+                        <select id="taskType" class="form-select mb-2">
+                            <option value="youtube">ইউটিউব</option>
+                            <option value="facebook">ফেসবুক</option>
+                            <option value="daily">ডেইলি</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="url" id="taskLink" class="form-control mb-2" placeholder="লিংক">
+                <button class="btn btn-primary w-100" onclick="addTask()">টাস্ক যোগ করুন</button>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">টাস্ক লিস্ট</h5>
+                <div id="tasksList"></div>
+            </div>
+        </div>
+
+        <!-- YouTube Tasks -->
+        <div id="adminYoutube" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">নতুন ইউটিউব টাস্ক</h5>
+                <input type="text" id="ytTitle" class="form-control mb-2" placeholder="টাইটেল">
+                <input type="url" id="ytLink" class="form-control mb-2" placeholder="ভিডিও লিংক">
+                <input type="text" id="ytCode" class="form-control mb-2" placeholder="কোড">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="number" id="ytReward" class="form-control mb-2" placeholder="রিওয়ার্ড">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" id="ytHours" class="form-control mb-2" placeholder="ভ্যালিড (ঘণ্টা)" value="24">
+                    </div>
+                </div>
+                <button class="btn btn-danger w-100" onclick="addYouTubeTask()">ইউটিউব টাস্ক যোগ করুন</button>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">ইউটিউব টাস্ক লিস্ট</h5>
+                <div id="youtubeTasksList"></div>
+            </div>
+        </div>
+
+        <!-- Tournaments -->
+        <div id="adminTournaments" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">নতুন টুর্নামেন্ট</h5>
+                <input type="text" id="tournamentName" class="form-control mb-2" placeholder="নাম">
+                <div class="row">
+                    <div class="col-6">
+                        <select id="tournamentType" class="form-select mb-2">
+                            <option value="solo">সোলো</option>
+                            <option value="duo">ডুয়ো</option>
+                            <option value="squad">স্কোয়াড</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select id="tournamentMap" class="form-select mb-2">
+                            <option value="bermuda">বারমুডা</option>
+                            <option value="purgatory">পর্গেটরি</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <input type="number" id="entryFee" class="form-control mb-2" placeholder="এন্ট্রি ফি">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" id="maxPlayers" class="form-control mb-2" placeholder="সর্বোচ্চ">
+                    </div>
+                </div>
+                <input type="text" id="prizePool" class="form-control mb-2" placeholder="প্রাইজ মানি">
+                <input type="datetime-local" id="startTime" class="form-control mb-2">
+                <button class="btn btn-primary w-100" onclick="addTournament()">টুর্নামেন্ট যোগ করুন</button>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">টুর্নামেন্ট লিস্ট</h5>
+                <div id="tournamentsList"></div>
+            </div>
+        </div>
+
+        <!-- Tournament Manage -->
+        <div id="adminManage" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">টুর্নামেন্ট সিলেক্ট</h5>
+                <select id="manageTournamentSelect" class="form-select mb-3" onchange="loadTournamentManage()">
+                    <option value="">নির্বাচন করুন</option>
+                </select>
+            </div>
+
+            <div id="manageContent" class="hidden">
+                <div class="glass-card">
+                    <h5 id="manageTournamentName"></h5>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <span>জয়েন করেছে</span>
+                            <h3 id="joinedCount">0</h3>
+                        </div>
+                        <div class="col-4">
+                            <span>সিলেক্ট করেছে</span>
+                            <h3 id="selectedCount">0</h3>
+                        </div>
+                        <div class="col-4">
+                            <span>মোট</span>
+                            <h3 id="maxCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h5>প্লেয়ার সিলেক্ট</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" id="selectCount" class="form-control" placeholder="কতজন?">
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-primary w-100" onclick="selectRandom()">র‍্যান্ডম সিলেক্ট</button>
+                        </div>
+                    </div>
+                    <div id="selectionHistory" class="mt-3"></div>
+                </div>
+
+                <div class="glass-card">
+                    <h5>রুম ডিটেইলস</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" id="roomId" class="form-control mb-2" placeholder="রুম আইডি">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" id="roomPassword" class="form-control mb-2" placeholder="পাসওয়ার্ড">
+                        </div>
+                    </div>
+                    <button class="btn btn-success w-100" onclick="setRoom()">সেট করুন</button>
+                    <div id="currentRoom" class="mt-2 p-2 bg-light rounded hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Settings -->
+        <div id="adminSupport" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">হোয়াটসঅ্যাপ সেটিংস</h5>
+                <input type="text" id="whatsappNumber" class="form-control mb-2" placeholder="নাম্বার">
+                <input type="text" id="whatsappMsg" class="form-control mb-2" placeholder="মেসেজ">
+                <button class="btn btn-success w-100 mb-3" onclick="saveWhatsApp()">সেভ করুন</button>
+
+                <h5 class="mb-3">টেলিগ্রাম সেটিংস</h5>
+                <input type="url" id="telegramLink" class="form-control mb-2" placeholder="লিংক">
+                <button class="btn btn-primary w-100 mb-3" onclick="saveTelegram()">সেভ করুন</button>
+
+                <h5 class="mb-3">ইমেইল সাপোর্ট</h5>
+                <input type="email" id="supportEmail" class="form-control mb-2" placeholder="ইমেইল">
+                <button class="btn btn-info w-100" onclick="saveEmail()">সেভ করুন</button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div id="adminStats" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">বিস্তারিত পরিসংখ্যান</h5>
+                <div id="detailedStats"></div>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">লিডারবোর্ড</h5>
+                <div id="leaderboard"></div>
+            </div>
+        </div>
+
+        <!-- About -->
+        <div id="adminAbout" class="admin-tab">
+            <div class="glass-card">
+                <h5 class="mb-3">এবাউট এডিট</h5>
+                <textarea id="aboutContent" class="form-control mb-2" rows="10"></textarea>
+                <button class="btn btn-primary w-100" onclick="saveAbout()">সেভ করুন</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="navbar-bottom">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col"><div class="nav-item-bottom active" onclick="showPage('home', this)"><i class="bi bi-house-door"></i><span>হোম</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('task', this)"><i class="bi bi-list-task"></i><span>টাস্ক</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('tournament', this)"><i class="bi bi-trophy"></i><span>টুর্নামেন্ট</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('history', this)"><i class="bi bi-clock-history"></i><span>হিস্ট্রি</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('about', this)"><i class="bi bi-info-circle"></i><span>এবাউট</span></div></div>
+            <div class="col"><div class="nav-item-bottom" onclick="showPage('account', this)"><i class="bi bi-person"></i><span>অ্যাকাউন্ট</span></div></div>
+        </div>
+    </div>
+</nav>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Main Script -->
+<script>
+// ==================== GLOBAL VARIABLES ====================
+let currentUser = null;
+let isAdmin = false;
+const ADMIN_EMAIL = 'mjoga289@gmail.com';
+let currentManageTournament = null;
+
+// ==================== MESSAGE FUNCTIONS ====================
+function showSuccess(msg) {
+    const el = document.getElementById('successMessage');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+function showError(msg) {
+    const el = document.getElementById('errorMessage');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Clear old data
+        localStorage.clear();
+        
+        // Initialize database
+        await db.init();
+        
+        // Create pages
+        const pages = ['home', 'task', 'tournament', 'history', 'about', 'account'];
+        let html = '';
+        pages.forEach(p => html += `<div id="${p}" class="page"></div>`);
+        document.getElementById('mainContent').innerHTML = html;
+        
+        // Check saved user
+        const saved = localStorage.getItem('currentUser');
+        if (saved) {
+            currentUser = JSON.parse(saved);
+            if (currentUser.email === ADMIN_EMAIL) {
+                isAdmin = true;
+                document.getElementById('adminBtn').style.display = 'block';
+            }
+        }
+        
+        // Load pages
+        await loadAllPages();
+        await loadSupportButtons();
+        
+        console.log('✅ Ready');
+    } catch (error) {
+        showError('Error: ' + error.message);
+    }
+});
+
+async function loadAllPages() {
+    document.getElementById('home').innerHTML = renderHome();
+    document.getElementById('home').classList.add('active');
+    document.getElementById('task').innerHTML = renderTask();
+    document.getElementById('tournament').innerHTML = renderTournament();
+    document.getElementById('history').innerHTML = renderHistory();
+    document.getElementById('about').innerHTML = renderAbout();
+    document.getElementById('account').innerHTML = renderAccount();
+    
+    // Load data
+    await loadNotice();
+    await loadAbout();
+}
+
+// ==================== PAGE RENDERING ====================
+function renderHome() {
+    return `
+        <div class="website-header text-center p-4 bg-primary text-white rounded-4 mb-3">
+            <h1>tunff09</h1>
+            <p>ফ্রি ফায়ার টুর্নামেন্ট</p>
+        </div>
+        
+        ${!currentUser ? `
+            <div class="glass-card text-center">
+                <h5>একাউন্ট তৈরি করুন</h5>
+                <p>টুর্নামেন্টে অংশগ্রহণের জন্য</p>
+                <button class="btn-primary-custom mt-2" onclick="showPage('account')">লগইন / সাইন আপ</button>
+            </div>
+        ` : ''}
+        
+        <div class="glass-card">
+            <h5><i class="bi bi-megaphone"></i> নোটিশ</h5>
+            <p id="noticeText">লোড হচ্ছে...</p>
+        </div>
+    `;
+}
+
+function renderTask() {
+    return `
+        <h5 class="mb-3"><i class="bi bi-list-task"></i> ডেইলি টাস্ক</h5>
+        <div id="tasksContainer" class="mb-4">
+            <div class="text-center">লোড হচ্ছে...</div>
+        </div>
+        
+        <h5 class="mb-3 mt-4"><i class="bi bi-youtube text-danger"></i> ইউটিউব টাস্ক</h5>
+        <div id="youtubeTasksContainer">
+            <div class="text-center">লোড হচ্ছে...</div>
+        </div>
+    `;
+}
+
+function renderTournament() {
+    return `
+        <h5 class="mb-3"><i class="bi bi-trophy"></i> টুর্নামেন্ট</h5>
+        <div id="tournamentsContainer">
+            <div class="text-center">লোড হচ্ছে...</div>
+        </div>
+    `;
+}
+
+function renderHistory() {
+    if (!currentUser) {
+        return `
+            <div class="glass-card text-center">
+                <h5>হিস্ট্রি দেখতে লগইন করুন</h5>
+                <button class="btn-primary-custom mt-2" onclick="showPage('account')">লগইন</button>
+            </div>
+        `;
+    }
+    return `<div id="historyContainer">লোড হচ্ছে...</div>`;
+}
+
+function renderAbout() {
+    return `
+        <h5 class="mb-3"><i class="bi bi-info-circle"></i> সম্পর্কে</h5>
+        <div class="glass-card">
+            <p id="aboutText">লোড হচ্ছে...</p>
+        </div>
+    `;
+}
+
+function renderAccount() {
+    if (!currentUser) {
+        return `
+            <div class="glass-card">
+                <h5 class="text-center mb-4">স্বাগতম</h5>
+                <input type="email" id="loginEmail" class="form-control mb-3" placeholder="ইমেইল">
+                <input type="password" id="loginPassword" class="form-control mb-3" placeholder="পাসওয়ার্ড">
+                <input type="text" id="loginFFID" class="form-control mb-3 hidden" placeholder="FF ID">
+                <input type="text" id="loginPhone" class="form-control mb-3 hidden" placeholder="WhatsApp">
+                
+                <button class="btn-primary-custom mb-2" onclick="handleLogin()">লগইন</button>
+                <button class="btn btn-link w-100" onclick="toggleSignup()">নতুন একাউন্ট</button>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="glass-card">
+                <div class="text-center mb-4">
+                    <h5>${currentUser.email}</h5>
+                    <div class="stat-card p-3 bg-light rounded-3">
+                        <span>কয়েন</span>
+                        <h3>${currentUser.coins || 0}</h3>
+                    </div>
+                </div>
+                
+                <div class="bg-light p-3 rounded-3">
+                    <p><strong>FF ID:</strong> ${currentUser.ffid || '---'}</p>
+                    <p><strong>WhatsApp:</strong> ${currentUser.phone || '---'}</p>
+                    <p><strong>টাস্ক সম্পন্ন:</strong> ${currentUser.tasksCompleted || 0}</p>
+                    <p><strong>স্ট্যাটাস:</strong> ${currentUser.verified ? '✅ Verified' : '⏳ Pending'}</p>
+                </div>
+                
+                <button class="btn btn-outline-danger w-100 mt-3" onclick="logout()">লগআউট</button>
+            </div>
+        `;
+    }
+}
+
+// ==================== AUTH FUNCTIONS ====================
+let isSignup = false;
+
+window.toggleSignup = () => {
+    isSignup = !isSignup;
+    document.getElementById('loginFFID').classList.toggle('hidden');
+    document.getElementById('loginPhone').classList.toggle('hidden');
+    document.querySelector('.btn-primary-custom').textContent = 
+        isSignup ? 'নতুন একাউন্ট তৈরি করুন' : 'লগইন';
+};
+
+window.handleLogin = async () => {
+    try {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        
+        if (!email || !pass) {
+            showError('ইমেইল ও পাসওয়ার্ড দিন');
+            return;
+        }
+        
+        if (isSignup) {
+            // SIGNUP
+            const ffid = document.getElementById('loginFFID').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
+            
+            if (!ffid || !phone) {
+                showError('FF ID ও ফোন দিন');
+                return;
+            }
+            
+            const result = await db.createUser({
+                uid: 'user_' + Date.now(),
+                email: email,
+                password: pass,
+                ffid: ffid,
+                phone: phone,
+                coins: 10,
+                tasksCompleted: 0,
+                verified: false
+            });
+            
+            if (result.success) {
+                currentUser = result.user;
+                localStorage.setItem('currentUser', JSON.stringify(result.user));
+                
+                if (email === ADMIN_EMAIL) {
+                    isAdmin = true;
+                    document.getElementById('adminBtn').style.display = 'block';
+                }
+                
+                showSuccess('✅ একাউন্ট তৈরি! ১০ কয়েন বোনাস');
+                showPage('home');
+                document.getElementById('account').innerHTML = renderAccount();
+            } else {
+                showError(result.error || 'একাউন্ট তৈরি হয়নি');
+            }
+        } else {
+            // LOGIN
+            const user = await db.getUserByEmailAndPassword(email, pass);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                if (user.email === ADMIN_EMAIL) {
+                    isAdmin = true;
+                    document.getElementById('adminBtn').style.display = 'block';
+                }
+                
+                showSuccess('✅ লগইন সফল');
+                showPage('home');
+                document.getElementById('account').innerHTML = renderAccount();
+            } else {
+                showError('ইমেইল বা পাসওয়ার্ড ভুল');
+            }
+        }
+    } catch (error) {
+        showError('Error: ' + error.message);
+    }
+};
+
+window.logout = () => {
+    currentUser = null;
+    isAdmin = false;
+    localStorage.removeItem('currentUser');
+    document.getElementById('adminBtn').style.display = 'none';
+    document.getElementById('adminPanel').classList.remove('show');
+    showPage('home');
+    document.getElementById('account').innerHTML = renderAccount();
+    showSuccess('👋 লগআউট');
+};
+
+// ==================== NOTICE & ABOUT ====================
+async function loadNotice() {
+    const notice = await db.getConfig('notice');
+    document.getElementById('noticeText').textContent = notice || 'কোন নোটিশ নেই';
+}
+
+async function loadAbout() {
+    const about = await db.getConfig('about');
+    document.getElementById('aboutText').innerHTML = about || 'তথ্য নেই';
+}
+
+// ==================== SUPPORT BUTTONS ====================
+async function loadSupportButtons() {
+    const whatsapp = await db.getConfig('whatsapp_number') || '8801234567890';
+    const msg = await db.getConfig('whatsapp_message') || '';
+    const telegram = await db.getConfig('telegram_link') || 'https://t.me/tunff09';
+    
+    let url = `https://wa.me/${whatsapp}`;
+    if (msg) url += `?text=${encodeURIComponent(msg)}`;
+    document.getElementById('whatsappBtn').href = url;
+    document.getElementById('telegramBtn').href = telegram;
+}
+
+// ==================== PAGE NAVIGATION ====================
+window.showPage = (pageId, element) => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    
+    if (element) {
+        document.querySelectorAll('.nav-item-bottom').forEach(n => n.classList.remove('active'));
+        element.classList.add('active');
+    }
+    
+    // Load page data
+    if (pageId === 'task') {
+        loadTasks();
+        loadYouTubeTasks();
+    }
+    if (pageId === 'tournament') loadTournaments();
+    if (pageId === 'history' && currentUser) loadUserHistory();
+    if (pageId === 'home') loadNotice();
+    if (pageId === 'about') loadAbout();
+};
+
+// ==================== TASK FUNCTIONS ====================
+async function loadTasks() {
+    try {
+        const tasks = await db.getAllTasks();
+        const container = document.getElementById('tasksContainer');
+        
+        if (!tasks || tasks.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন টাস্ক নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tasks.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        for (const task of tasks) {
+            let completed = false;
+            if (currentUser) {
+                const completedTasks = await db.getUserCompletedTasks(currentUser.uid);
+                completed = completedTasks.some(ct => ct.taskId === task.id);
+            }
+            
+            html += `
+                <div class="glass-card mb-2">
+                    <h6>${task.title}</h6>
+                    <p class="small text-muted">${task.description}</p>
+                    <div class="d-flex justify-content-between">
+                        <span class="badge bg-primary">+${task.reward} কয়েন</span>
+                        ${completed ? 
+                            '<span class="badge bg-success">সম্পন্ন</span>' :
+                            `<button class="btn btn-sm btn-outline-primary" 
+                                    onclick="completeTask(${task.id}, ${task.reward})"
+                                    ${!currentUser ? 'disabled' : ''}>
+                                সম্পন্ন করুন
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+    }
+}
+
+window.completeTask = async (taskId, reward) => {
+    try {
+        if (!currentUser) {
+            showError('লগইন করুন');
+            return;
+        }
+        
+        // Show ad
+        if (typeof show_10698833 === 'function') {
+            try { await show_10698833('pop'); } catch(e) {}
+        }
+        
+        await db.completeTask(currentUser.uid, taskId, reward);
+        
+        currentUser.coins += reward;
+        currentUser.tasksCompleted = (currentUser.tasksCompleted || 0) + 1;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        showSuccess(`✅ +${reward} কয়েন`);
+        await loadTasks();
+        document.getElementById('account').innerHTML = renderAccount();
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+// ==================== YOUTUBE TASKS ====================
+async function loadYouTubeTasks() {
+    try {
+        const tasks = await db.getAllYouTubeTasks();
+        const container = document.getElementById('youtubeTasksContainer');
+        
+        if (!tasks || tasks.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন ইউটিউব টাস্ক নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tasks.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        for (const task of tasks) {
+            let completed = false;
+            if (currentUser) {
+                const completedTasks = await db.getUserCompletedYouTubeTasks(currentUser.uid);
+                completed = completedTasks.some(ct => ct.taskId === task.id);
+            }
+            
+            const expired = task.validUntil && new Date(task.validUntil) < new Date();
+            
+            html += `
+                <div class="glass-card mb-2">
+                    <h6>${task.title}</h6>
+                    <p class="small">
+                        <a href="${task.videoLink}" target="_blank">ভিডিও দেখুন</a>
+                    </p>
+                    
+                    ${!completed && !expired && currentUser ? `
+                        <div class="input-group mb-2">
+                            <input type="text" id="code_${task.id}" class="form-control" placeholder="কোড">
+                            <button class="btn btn-danger" onclick="verifyCode(${task.id}, ${task.reward})">যাচাই</button>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="d-flex justify-content-between">
+                        <span class="badge bg-danger">+${task.reward} কয়েন</span>
+                        ${completed ? '<span class="badge bg-success">সম্পন্ন</span>' : 
+                          expired ? '<span class="badge bg-secondary">মেয়াদ শেষ</span>' : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading YouTube tasks:', error);
+    }
+}
+
+window.verifyCode = async (taskId, reward) => {
+    try {
+        if (!currentUser) {
+            showError('লগইন করুন');
+            return;
+        }
+        
+        const code = document.getElementById(`code_${taskId}`).value.trim();
+        if (!code) {
+            showError('কোড দিন');
+            return;
+        }
+        
+        // Show ad
+        if (typeof show_10698833 === 'function') {
+            try { await show_10698833('pop'); } catch(e) {}
+        }
+        
+        const result = await db.verifyYouTubeCode(currentUser.uid, taskId, code, reward);
+        
+        if (result.success) {
+            currentUser.coins += reward;
+            currentUser.tasksCompleted = (currentUser.tasksCompleted || 0) + 1;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showSuccess(`✅ +${reward} কয়েন`);
+            await loadYouTubeTasks();
+            document.getElementById('account').innerHTML = renderAccount();
+        } else {
+            showError(result.message || 'ভুল কোড');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+// ==================== TOURNAMENT FUNCTIONS ====================
+async function loadTournaments() {
+    try {
+        const tournaments = await db.getAllTournaments();
+        const container = document.getElementById('tournamentsContainer');
+        
+        if (!tournaments || tournaments.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন টুর্নামেন্ট নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        tournaments.sort((a,b) => new Date(b.startTime) - new Date(a.startTime));
+        
+        for (const t of tournaments) {
+            let joined = false;
+            if (currentUser) {
+                const participants = await db.getTournamentParticipants(t.id);
+                joined = participants.some(p => p.userId === currentUser.uid);
+            }
+            
+            html += `
+                <div class="tourney-card glass-card">
+                    <div class="d-flex justify-content-between bg-primary text-white p-2 rounded-top">
+                        <span>Entry: ${t.entryFee}</span>
+                        <span>Prize: ${t.prizePool}</span>
+                    </div>
+                    <div class="p-3">
+                        <h6>${t.name}</h6>
+                        <p class="small">
+                            ${t.type} | ${t.map}<br>
+                            ${new Date(t.startTime).toLocaleString()}<br>
+                            <span class="status-badge status-${t.status}">${t.status}</span>
+                            ${t.currentParticipants}/${t.maxPlayers} joined
+                        </p>
+                        
+                        ${t.roomDetails && t.status === 'ongoing' ? `
+                            <div class="room-details p-2 bg-light rounded">
+                                <small>ID: ${t.roomDetails.roomId}</small><br>
+                                <small>Pass: ${t.roomDetails.password}</small>
+                            </div>
+                        ` : ''}
+                        
+                        ${!joined && t.status === 'upcoming' && currentUser ? `
+                            <button class="btn btn-dark btn-sm w-100" 
+                                    onclick="joinTournament(${t.id}, ${t.entryFee})">
+                                জয়েন (${t.entryFee} কয়েন)
+                            </button>
+                        ` : joined ? '<p class="text-success small">✅ জয়েন করেছেন</p>' : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading tournaments:', error);
+    }
+}
+
+window.joinTournament = async (id, fee) => {
+    try {
+        if (!currentUser) {
+            showError('লগইন করুন');
+            return;
+        }
+        
+        if (!currentUser.verified) {
+            showError('এডমিন ভেরিফাই করুন');
+            return;
+        }
+        
+        if (currentUser.coins < fee) {
+            showError('কয়েন নেই');
+            return;
+        }
+        
+        const result = await db.joinTournament(id, currentUser.uid, {
+            ffid: currentUser.ffid,
+            phone: currentUser.phone,
+            email: currentUser.email
+        });
+        
+        if (result.success) {
+            currentUser.coins -= fee;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showSuccess('✅ জয়েন করেছেন');
+            await loadTournaments();
+            document.getElementById('account').innerHTML = renderAccount();
+        } else {
+            showError(result.error);
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+// ==================== USER HISTORY ====================
+async function loadUserHistory() {
+    try {
+        const history = await db.getUserTournaments(currentUser.uid);
+        const container = document.getElementById('historyContainer');
+        
+        if (history.length === 0) {
+            container.innerHTML = '<p class="text-muted">কোন হিস্ট্রি নেই</p>';
+            return;
+        }
+        
+        let html = '';
+        for (const h of history) {
+            html += `
+                <div class="glass-card">
+                    <h6>${h.tournamentDetails.name}</h6>
+                    <p class="small">
+                        ${new Date(h.joinedAt).toLocaleString()}<br>
+                        Status: ${h.status}
+                        ${h.selectionRound ? ` | Round: ${h.selectionRound}` : ''}
+                    </p>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading history:', error);
+    }
+}
+
+// ==================== ADMIN PANEL ====================
+window.toggleAdminPanel = () => {
+    if (!isAdmin) {
+        showError('শুধু এডমিন');
+        return;
+    }
+    document.getElementById('adminPanel').classList.toggle('show');
+    if (document.getElementById('adminPanel').classList.contains('show')) {
+        loadAdminData();
+    }
+};
+
+window.showAdminTab = (tab) => {
+    document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+    
+    // Load tab data
+    if (tab === 'dashboard') loadDashboard();
+    if (tab === 'users') loadUsersList();
+    if (tab === 'tasks') loadTasksList();
+    if (tab === 'youtube') loadYouTubeTasksList();
+    if (tab === 'tournaments') loadTournamentsList();
+    if (tab === 'manage') loadTournamentSelect();
+    if (tab === 'support') loadSupportSettings();
+    if (tab === 'stats') loadStatistics();
+    if (tab === 'about') loadAboutForEdit();
+};
+
+async function loadAdminData() {
+    loadDashboard();
+    loadUsersList();
+    loadTasksList();
+    loadYouTubeTasksList();
+    loadTournamentsList();
+    loadTournamentSelect();
+    loadSupportSettings();
+    loadStatistics();
+    loadAboutForEdit();
+}
+
+async function loadDashboard() {
+    const users = await db.getAllUsers();
+    const tasks = await db.getAllTasks();
+    const youtube = await db.getAllYouTubeTasks();
+    const tournaments = await db.getAllTournaments();
+    
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('verifiedUsers').textContent = users.filter(u => u.verified).length;
+    document.getElementById('totalTasks').textContent = tasks.length + youtube.length;
+    document.getElementById('totalTournaments').textContent = tournaments.length;
+}
+
+async function loadUsersList() {
+    const users = await db.getAllUsers();
+    let html = '<table class="table table-sm"><tr><th>Email</th><th>FF ID</th><th>Coins</th><th>Tasks</th><th>Status</th><th>Action</th></tr>';
+    
+    for (const u of users) {
+        html += `
+            <tr>
+                <td>${u.email}</td>
+                <td>${u.ffid || '-'}</td>
+                <td>${u.coins}</td>
+                <td>${u.tasksCompleted || 0}</td>
+                <td>${u.verified ? '✅' : '⏳'}</td>
+                <td>
+                    <button class="btn btn-sm btn-success" onclick="giveCoins('${u.uid}')">+Coins</button>
+                    ${!u.verified ? `<button class="btn btn-sm btn-warning" onclick="verifyUser('${u.uid}')">Verify</button>` : ''}
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.uid}')">Del</button>
+                </td>
+            </tr>
+        `;
+    }
+    
+    html += '</table>';
+    document.getElementById('usersList').innerHTML = html;
+}
+
+async function loadTasksList() {
+    const tasks = await db.getAllTasks();
+    let html = '<div class="list-group">';
+    
+    tasks.forEach(t => {
+        html += `
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6>${t.title}</h6>
+                    <small>+${t.reward} coins</small>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="deleteTask(${t.id})">Delete</button>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    document.getElementById('tasksList').innerHTML = html;
+}
+
+async function loadYouTubeTasksList() {
+    const tasks = await db.getAllYouTubeTasks();
+    let html = '<div class="list-group">';
+    
+    tasks.forEach(t => {
+        html += `
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>${t.title}</h6>
+                        <small>Code: ${t.code} | +${t.reward}</small><br>
+                        <small>Valid: ${new Date(t.validUntil).toLocaleString()}</small>
+                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteYouTubeTask(${t.id})">Delete</button>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    document.getElementById('youtubeTasksList').innerHTML = html;
+}
+
+async function loadTournamentsList() {
+    const tournaments = await db.getAllTournaments();
+    let html = '<div class="list-group">';
+    
+    tournaments.forEach(t => {
+        html += `
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6>${t.name}</h6>
+                    <small>Entry: ${t.entryFee} | Status: ${t.status}</small>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="deleteTournament(${t.id})">Delete</button>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    document.getElementById('tournamentsList').innerHTML = html;
+}
+
+async function loadTournamentSelect() {
+    const tournaments = await db.getAllTournaments();
+    const select = document.getElementById('manageTournamentSelect');
+    
+    let options = '<option value="">নির্বাচন করুন</option>';
+    tournaments.forEach(t => {
+        options += `<option value="${t.id}">${t.name}</option>`;
+    });
+    
+    select.innerHTML = options;
+}
+
+window.loadTournamentManage = async () => {
+    const id = document.getElementById('manageTournamentSelect').value;
+    if (!id) {
+        document.getElementById('manageContent').classList.add('hidden');
+        return;
+    }
+    
+    const t = await db.getTournament(id);
+    currentManageTournament = t;
+    
+    document.getElementById('manageTournamentName').textContent = t.name;
+    document.getElementById('joinedCount').textContent = t.currentParticipants || 0;
+    document.getElementById('selectedCount').textContent = t.selectedParticipants || 0;
+    document.getElementById('maxCount').textContent = t.maxPlayers;
+    
+    if (t.roomDetails) {
+        document.getElementById('currentRoom').innerHTML = `
+            <small>ID: ${t.roomDetails.roomId}</small><br>
+            <small>Pass: ${t.roomDetails.password}</small>
+        `;
+        document.getElementById('currentRoom').classList.remove('hidden');
+    }
+    
+    document.getElementById('manageContent').classList.remove('hidden');
+};
+
+window.selectRandom = async () => {
+    const count = document.getElementById('selectCount').value;
+    if (!count) {
+        showError('সংখ্যা দিন');
+        return;
+    }
+    
+    try {
+        const result = await db.selectRandomParticipants(currentManageTournament.id, parseInt(count));
+        showSuccess(`✅ Round ${result.round}: ${result.selected.length} selected`);
+        await loadTournamentManage();
+    } catch (error) {
+        showError(error.message);
+    }
+};
+
+window.setRoom = async () => {
+    const id = document.getElementById('roomId').value;
+    const pass = document.getElementById('roomPassword').value;
+    
+    if (!id || !pass) {
+        showError('ID ও পাসওয়ার্ড দিন');
+        return;
+    }
+    
+    const result = await db.setRoomDetails(currentManageTournament.id, id, pass);
+    if (result.success) {
+        showSuccess('✅ রুম সেট হয়েছে');
+        await loadTournamentManage();
+        document.getElementById('roomId').value = '';
+        document.getElementById('roomPassword').value = '';
+    }
+};
+
+async function loadSupportSettings() {
+    document.getElementById('whatsappNumber').value = await db.getConfig('whatsapp_number') || '';
+    document.getElementById('whatsappMsg').value = await db.getConfig('whatsapp_message') || '';
+    document.getElementById('telegramLink').value = await db.getConfig('telegram_link') || '';
+    document.getElementById('supportEmail').value = await db.getConfig('support_email') || '';
+}
+
+window.saveWhatsApp = async () => {
+    const num = document.getElementById('whatsappNumber').value;
+    const msg = document.getElementById('whatsappMsg').value;
+    await db.setConfig('whatsapp_number', num);
+    await db.setConfig('whatsapp_message', msg);
+    await loadSupportButtons();
+    showSuccess('✅ WhatsApp সেভ হয়েছে');
+};
+
+window.saveTelegram = async () => {
+    const link = document.getElementById('telegramLink').value;
+    await db.setConfig('telegram_link', link);
+    await loadSupportButtons();
+    showSuccess('✅ Telegram সেভ হয়েছে');
+};
+
+window.saveEmail = async () => {
+    const email = document.getElementById('supportEmail').value;
+    await db.setConfig('support_email', email);
+    showSuccess('✅ Email সেভ হয়েছে');
+};
+
+async function loadStatistics() {
+    const users = await db.getAllUsers();
+    const tasks = await db.getAllTasks();
+    const youtube = await db.getAllYouTubeTasks();
+    const completed = await db.getAllCompletedTasks();
+    const completedYt = await db.getAllCompletedYouTubeTasks();
+    
+    let html = `
+        <p>মোট ইউজার: ${users.length}</p>
+        <p>ভেরিফাইড: ${users.filter(u => u.verified).length}</p>
+        <p>মোট টাস্ক: ${tasks.length + youtube.length}</p>
+        <p>টাস্ক সম্পন্ন: ${completed.length + completedYt.length}</p>
+        <p>মোট কয়েন: ${users.reduce((sum, u) => sum + (u.coins || 0), 0)}</p>
+    `;
+    
+    document.getElementById('detailedStats').innerHTML = html;
+    
+    // Leaderboard
+    const leaderboard = [];
+    for (const u of users) {
+        const count = completed.filter(c => c.userId === u.uid).length + 
+                     completedYt.filter(c => c.userId === u.uid).length;
+        if (count > 0) {
+            leaderboard.push({ name: u.ffid || u.email, count });
+        }
+    }
+    
+    leaderboard.sort((a,b) => b.count - a.count);
+    let lbHtml = '<ol>';
+    leaderboard.slice(0,10).forEach(l => {
+        lbHtml += `<li>${l.name} - ${l.count} টাস্ক</li>`;
+    });
+    lbHtml += '</ol>';
+    
+    document.getElementById('leaderboard').innerHTML = lbHtml;
+}
+
+async function loadAboutForEdit() {
+    const about = await db.getConfig('about');
+    document.getElementById('aboutContent').value = about || '';
+}
+
+window.saveAbout = async () => {
+    const about = document.getElementById('aboutContent').value;
+    await db.setConfig('about', about);
+    await loadAbout();
+    showSuccess('✅ About সেভ হয়েছে');
+};
+
+// ==================== ADMIN ACTIONS ====================
+window.giveCoins = async (uid) => {
+    const amount = prompt('কত কয়েন দেবেন?');
+    if (amount) {
+        await db.updateUserCoins(uid, parseInt(amount));
+        showSuccess(`✅ ${amount} কয়েন দেওয়া হয়েছে`);
+        loadUsersList();
+    }
+};
+
+window.verifyUser = async (uid) => {
+    await db.updateUser(uid, { verified: true });
+    showSuccess('✅ ইউজার ভেরিফাইড');
+    loadUsersList();
+};
+
+window.deleteUser = async (uid) => {
+    if (confirm('ডিলিট করবেন?')) {
+        await db.deleteUser(uid);
+        showSuccess('✅ ডিলিট হয়েছে');
+        loadUsersList();
+        if (currentUser && currentUser.uid === uid) logout();
+    }
+};
+
+window.addTask = async () => {
+    const title = document.getElementById('taskTitle').value;
+    const desc = document.getElementById('taskDesc').value;
+    const reward = document.getElementById('taskReward').value;
+    const type = document.getElementById('taskType').value;
+    const link = document.getElementById('taskLink').value;
+    
+    if (!title || !desc || !reward) {
+        showError('সব ফিল্ড পূরণ করুন');
+        return;
+    }
+    
+    await db.createTask({ title, description: desc, reward: parseInt(reward), type, link });
+    showSuccess('✅ টাস্ক যোগ হয়েছে');
+    document.getElementById('taskTitle').value = '';
+    document.getElementById('taskDesc').value = '';
+    document.getElementById('taskReward').value = '';
+    document.getElementById('taskLink').value = '';
+    
+    loadTasksList();
+    loadTasks();
+};
+
+window.deleteTask = async (id) => {
+    if (confirm('ডিলিট করবেন?')) {
+        await db.deleteTask(id);
+        showSuccess('✅ ডিলিট হয়েছে');
+        loadTasksList();
+        loadTasks();
+    }
+};
+
+window.addYouTubeTask = async () => {
+    const title = document.getElementById('ytTitle').value;
+    const link = document.getElementById('ytLink').value;
+    const code = document.getElementById('ytCode').value;
+    const reward = document.getElementById('ytReward').value;
+    const hours = document.getElementById('ytHours').value;
+    
+    if (!title || !link || !code || !reward) {
+        showError('সব ফিল্ড পূরণ করুন');
+        return;
+    }
+    
+    const result = await db.createYouTubeTask({
+        title, videoLink: link, code, reward: parseInt(reward), validHours: parseInt(hours)
+    });
+    
+    if (result.success) {
+        showSuccess('✅ ইউটিউব টাস্ক যোগ হয়েছে');
+        document.getElementById('ytTitle').value = '';
+        document.getElementById('ytLink').value = '';
+        document.getElementById('ytCode').value = '';
+        document.getElementById('ytReward').value = '';
+        
+        loadYouTubeTasksList();
+        loadYouTubeTasks();
+    } else {
+        showError(result.error);
+    }
+};
+
+window.deleteYouTubeTask = async (id) => {
+    if (confirm('ডিলিট করবেন?')) {
+        await db.deleteYouTubeTask(id);
+        showSuccess('✅ ডিলিট হয়েছে');
+        loadYouTubeTasksList();
+        loadYouTubeTasks();
+    }
+};
+
+window.addTournament = async () => {
+    const name = document.getElementById('tournamentName').value;
+    const type = document.getElementById('tournamentType').value;
+    const map = document.getElementById('tournamentMap').value;
+    const fee = document.getElementById('entryFee').value;
+    const max = document.getElementById('maxPlayers').value;
+    const prize = document.getElementById('prizePool').value;
+    const time = document.getElementById('startTime').value;
+    
+    if (!name || !fee || !max || !prize || !time) {
+        showError('সব ফিল্ড পূরণ করুন');
+        return;
+    }
+    
+    await db.createTournament({
+        name, type, map, entryFee: parseInt(fee), maxPlayers: parseInt(max), prizePool: prize, startTime: time
+    });
+    
+    showSuccess('✅ টুর্নামেন্ট যোগ হয়েছে');
+    document.getElementById('tournamentName').value = '';
+    document.getElementById('entryFee').value = '';
+    document.getElementById('maxPlayers').value = '';
+    document.getElementById('prizePool').value = '';
+    document.getElementById('startTime').value = '';
+    
+    loadTournamentsList();
+    loadTournamentSelect();
+    loadTournaments();
+};
+
+window.deleteTournament = async (id) => {
+    if (confirm('ডিলিট করবেন?')) {
+        await db.deleteTournament(id);
+        showSuccess('✅ ডিলিট হয়েছে');
+        loadTournamentsList();
+        loadTournamentSelect();
+        loadTournaments();
+    }
+};
+
+window.searchUsers = async () => {
+    const term = document.getElementById('userSearchInput').value;
+    const users = await db.searchUsers(term);
+    
+    let html = '';
+    users.forEach(u => {
+        html += `
+            <div class="border p-2 mb-2">
+                <p>${u.email} | ${u.ffid} | ${u.phone}</p>
+                <p>Coins: ${u.coins} | Tasks: ${u.tasksCompleted || 0}</p>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-success" onclick="giveCoins('${u.uid}')">+Coins</button>
+                    ${!u.verified ? `<button class="btn btn-warning" onclick="verifyUser('${u.uid}')">Verify</button>` : ''}
+                    <button class="btn btn-danger" onclick="deleteUser('${u.uid}')">Delete</button>
+                </div>
+            </div>
+        `;
+    });
+    
+    document.getElementById('userSearchResult').innerHTML = html || '<p>কোন ইউজার নেই</p>';
+};
+</script>
+</body>
+</html>
